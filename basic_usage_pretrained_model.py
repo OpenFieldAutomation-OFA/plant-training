@@ -1,9 +1,8 @@
-from argparse import ArgumentParser
 import pandas as pd
-from urllib.request import urlopen
 from PIL import Image
 import timm
 import torch
+import os
 
 
 def load_class_mapping(class_list_file):
@@ -18,57 +17,47 @@ def load_species_mapping(species_map_file):
     return  df['species'].to_dict()
 
 
-def main(args):
+pretrained_path = "model_best.pth.tar"
+class_mapping = "class_mapping.txt"
+species_mapping = "species_id_to_name.txt"
+device = "cuda"
+
+
+cid_to_spid = load_class_mapping(class_mapping)
+spid_to_sp = load_species_mapping(species_mapping)
     
-    cid_to_spid = load_class_mapping(args.class_mapping)
-    spid_to_sp = load_species_mapping(args.species_mapping)
-        
-    device = torch.device(args.device)
+device = torch.device(device)
 
-    model = timm.create_model('vit_base_patch14_reg4_dinov2.lvd142m', pretrained=False, num_classes=len(cid_to_spid), checkpoint_path=args.pretrained_path)
-    model = model.to(device)
-    model = model.eval()
+model = timm.create_model('vit_base_patch14_reg4_dinov2.lvd142m', pretrained=False, num_classes=len(cid_to_spid), checkpoint_path=pretrained_path)
+model = model.to(device)
+model = model.eval()
 
-    # get model specific transforms (normalization, resize)
-    data_config = timm.data.resolve_model_data_config(model)
-    transforms = timm.data.create_transform(**data_config, is_training=False)
+# get model specific transforms (normalization, resize)
+data_config = timm.data.resolve_model_data_config(model)
+transforms = timm.data.create_transform(**data_config, is_training=False)
 
-    img = None
-    if 'https://' in args.image or 'http://' in  args.image:
-        img = Image.open(urlopen(args.image))
-    elif args.image != None:
-        img = Image.open(args.image)
-        
-    if img != None:
-        img = transforms(img).unsqueeze(0)
-        img = img.to(device)
-        output = model(img)  # unsqueeze single image into batch of 1
-        top5_probabilities, top5_class_indices = torch.topk(output.softmax(dim=1) * 100, k=5)
-        top5_probabilities = top5_probabilities.cpu().detach().numpy()
-        top5_class_indices = top5_class_indices.cpu().detach().numpy()
-
-        for proba, cid in zip(top5_probabilities[0], top5_class_indices[0]):
-            species_id = cid_to_spid[cid]
-            species = spid_to_sp[species_id]
-            print(species_id, species, proba)
-
-
-
-if __name__ == '__main__':
-    parser = ArgumentParser()
-
-    parser.add_argument("--image", type=str,
-                        default='bd2d3830ac3270218ba82fd24e2290becd01317c.jpg') #Orchis simia
+folder = "/mnt/data/seedlings/Maize"
+folder = "/mnt/data/OPPD/DATA/images_plants/CENCY"
+for image in os.listdir(folder):
+    print(image)
+    img = Image.open(os.path.join(folder, image))
     
-    parser.add_argument("--class_mapping", type=str,
-                        default="class_mapping.txt")
-    parser.add_argument("--species_mapping", type=str,
-                        default="species_id_to_name.txt")
-    
-    parser.add_argument("--pretrained_path", type=str,
-                        default="model_best.pth.tar") #model_best.pth.tar
+    img = transforms(img).unsqueeze(0)
+    img = img.to(device)
+    output = model(img)  # unsqueeze single image into batch of 1
+    top_probabilities, top_class_indices = torch.topk(output.softmax(dim=1) * 100, k=1)
+    top_probabilities = top_probabilities.cpu().detach().numpy()
+    top_class_indices = top_class_indices.cpu().detach().numpy()
 
-    parser.add_argument("--device", type=str, default='cuda')
-    
-    args = parser.parse_args()
-    main(args)
+    proba = top_probabilities[0,0]
+    cid = top_class_indices[0,0]
+    species_id = cid_to_spid[cid]
+    species = spid_to_sp[species_id]
+    print(species_id, species, proba)
+
+    # for proba, cid in zip(top5_probabilities[0], top5_class_indices[0]):
+    #     species_id = cid_to_spid[cid]
+    #     species = spid_to_sp[species_id]
+    #     print(species_id, species, proba)
+
+
