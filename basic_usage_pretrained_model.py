@@ -18,7 +18,7 @@ def load_species_mapping(species_map_file):
 
 
 pretrained_path = "model_best.pth.tar"
-class_mapping = "class_mapping.txt"
+class_mapping = "preparation/class_mapping.txt"
 species_mapping = "species_id_to_name.txt"
 device = "cuda"
 

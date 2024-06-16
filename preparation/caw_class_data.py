@@ -5,26 +5,25 @@ import csv
 from PIL import Image
 import hashlib
 
-# The expected folder layout of the caw_data directory is:
-# - caw_data
-#   - images
-#   - bboxes
-#   - params
-#   - LICENCE.txt
-#   - README.txt
+"""
+This script creates a classification dataset from the CAW images
+using the bounding boxes.
+"""
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--input_dir',
-                    default="/mnt/c/caw/download",
-                    help="Directory of the downloaded CAW data.")
-parser.add_argument('--output_dir',
-                    default="/mnt/c/caw/classification",
-                    help="Path to the directory to save classification data.")
+parser.add_argument('--bboxes_dir',
+                    default="/mnt/c/caw/download/bboxes",
+                    help="Directory of the CAW bounding boxes.")
+parser.add_argument('--images_dir',
+                    default="/mnt/c/caw/download/images",
+                    help="Directory of the CAW images.")
+parser.add_argument('--classification_dir',
+                    default="/mnt/c/caw/test",
+                    help="Directory where classification images are saved.")
 
 args = parser.parse_args()
 
-# some CAW classes only specify the genus
-# some CAW classes are not present in plantclef
+# Mapping of CAW classes to PlantCLEF classes
 labelid_to_speciesid = {
     # 0: Soil
     1: 1363500, # Zea mays
@@ -129,10 +128,8 @@ labelid_to_speciesid = {
     # 255: Vegetation
 }
 
-bboxes_dir = os.path.join(args.input_dir, "bboxes")
-images_dir = os.path.join(args.input_dir, "images")
-
-count = 0
+bboxes_dir = args.bboxes_dir
+images_dir = args.images_dir
 
 for file_name in tqdm(os.listdir(bboxes_dir)):
     with open(os.path.join(bboxes_dir, file_name), 'r', newline='') as anno_file:
@@ -148,19 +145,16 @@ for file_name in tqdm(os.listdir(bboxes_dir)):
             labelid = row[4]
             if labelid in labelid_to_speciesid:
                 speciesid = labelid_to_speciesid[labelid]
-                folder = os.path.join(args.output_dir, str(speciesid))
-            else:
-                folder = os.path.join(args.output_dir, str(labelid))
-            
-            if not os.path.exists(folder):
-                os.makedirs(folder)
-            
-            file_name = hashlib.md5(cropped_image.tobytes()).hexdigest()
-            file_path = os.path.join(folder, file_name + '.jpg')
-            cropped_image.save(file_path)
-            count += 1
+                folder = os.path.join(args.classification_dir, str(speciesid))
+                
+                if not os.path.exists(folder):
+                    os.makedirs(folder)
+                
+                file_name = hashlib.md5(cropped_image.tobytes()).hexdigest()
+                file_path = os.path.join(folder, file_name + '.jpg')
+                cropped_image.save(file_path)
 
-print(f"Total count: {count}")
+
 
 
 
