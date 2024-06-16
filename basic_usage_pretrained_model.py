@@ -36,6 +36,8 @@ model = model.eval()
 data_config = timm.data.resolve_model_data_config(model)
 transforms = timm.data.create_transform(**data_config, is_training=False)
 
+test = model.state_dict()
+
 folder = "/mnt/data/seedlings/Maize"
 folder = "/mnt/data/OPPD/DATA/images_plants/CENCY"
 for image in os.listdir(folder):
