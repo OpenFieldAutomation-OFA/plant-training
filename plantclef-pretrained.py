@@ -1,11 +1,6 @@
 _base_ = 'mmpretrain/configs/_base_/default_runtime.py'
 
-default_hooks = dict(
-    logger=dict(interval=500),
-    visualization=dict(type='VisualizationHook', enable=True)
-)
-randomness = dict(deterministic=True, seed=0)
-
+# model settings
 model = dict(
     type='TimmClassifier',
     model_name='vit_base_patch14_reg4_dinov2.lvd142m',
@@ -51,8 +46,8 @@ test_pipeline = [
     dict(type='PackInputs'),
 ]
 
+# datasets
 data_dir = '/mnt/data/caw/classification'
-
 train_dataloader = dict(
     batch_size=64,
     num_workers=10,
@@ -93,6 +88,7 @@ test_dataloader = dict(
 val_evaluator = dict(type='Accuracy', topk=(1, 5))
 test_evaluator = dict(type='Accuracy', topk=(1, 5))
 
+# optimizer
 optim_wrapper = dict(
     type='AmpOptimWrapper',
     loss_scale='dynamic',
@@ -106,14 +102,18 @@ optim_wrapper = dict(
     )
 )
 
+# learning rate scheduler
 param_scheduler = dict(
     type='CosineAnnealingLR',
     by_epoch=True,
 )
 
-train_cfg = dict(by_epoch=True, max_epochs=20, val_interval=1)
+# runtime settings
+train_cfg = dict(by_epoch=True, max_epochs=15, val_interval=1)
 val_cfg = dict()
 test_cfg = dict()
+default_hooks = dict(checkpoint=dict(max_keep_ckpts=3))
+randomness = dict(deterministic=True, seed=0)
 
 # Will automatically scale learning rate to batch_size
 auto_scale_lr = dict(base_batch_size=1024)
