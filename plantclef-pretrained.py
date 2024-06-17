@@ -99,7 +99,7 @@ test_pipeline = [
 data_dir = '/mnt/data/caw/classification'
 
 train_dataloader = dict(
-    batch_size=16,
+    batch_size=64,
     num_workers=10,
     dataset=dict(
         type='CustomDataset',
