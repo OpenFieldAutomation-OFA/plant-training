@@ -20,7 +20,6 @@ parser.add_argument('--images_dir',
 parser.add_argument('--classification_dir',
                     default="/mnt/c/caw/test",
                     help="Directory where classification images are saved.")
-
 args = parser.parse_args()
 
 # Mapping of CAW classes to PlantCLEF classes
