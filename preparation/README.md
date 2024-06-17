@@ -1,8 +1,8 @@
 # Dataset Preparation
-1. Download and extract the CAW dataset.
+1. Download and extract the CAW dataset. Replace `/mnt/data/caw/download` with your desired directory.
     ```bash
     wget -i caw_data.txt -P /tmp/caw
-    for f in /tmp/caw/*.tar; do tar xvf "$f" -C /caw/download; done
+    for f in /tmp/caw/*.tar; do tar xvf "$f" -C /mnt/data/caw/download; done
     rm -r /tmp/caw
     ```
 2. Create the folder with classification images.

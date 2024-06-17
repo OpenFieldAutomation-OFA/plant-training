@@ -96,13 +96,14 @@ test_pipeline = [
     dict(type='PackInputs'),
 ]
 
-data_dir = '/mnt/c/caw/classification'
+data_dir = '/mnt/data/caw/classification'
 
 train_dataloader = dict(
     batch_size=16,
     num_workers=10,
     dataset=dict(
         type='CustomDataset',
+        data_prefix=data_dir,
         ann_file='annotation/caw_train.txt',
         pipeline=test_pipeline
     ),
@@ -114,6 +115,7 @@ val_dataloader = dict(
     num_workers=10,
     dataset=dict(
         type='CustomDataset',
+        data_prefix=data_dir,
         ann_file='annotation/caw_val.txt',
         pipeline=test_pipeline
     ),
@@ -125,6 +127,7 @@ test_dataloader = dict(
     num_workers=10,
     dataset=dict(
         type='CustomDataset',
+        data_prefix=data_dir,
         ann_file='annotation/caw_test.txt',
         pipeline=test_pipeline
     ),

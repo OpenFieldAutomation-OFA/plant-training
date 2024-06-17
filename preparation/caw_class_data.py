@@ -12,13 +12,13 @@ using the bounding boxes.
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--bboxes_dir',
-                    default="/mnt/c/caw/download/bboxes",
+                    default="/mnt/data/caw/download/bboxes",
                     help="Directory of the CAW bounding boxes.")
 parser.add_argument('--images_dir',
-                    default="/mnt/c/caw/download/images",
+                    default="/mnt/data/caw/download/images",
                     help="Directory of the CAW images.")
 parser.add_argument('--classification_dir',
-                    default="/mnt/c/caw/test",
+                    default="/mnt/data/caw/classification",
                     help="Directory where classification images are saved.")
 args = parser.parse_args()
 
