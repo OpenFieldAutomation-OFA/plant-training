@@ -1,5 +1,6 @@
 .venv/
 *.tar
+*.csv
 caw/
 cropandweed-dataset/
 mmpretrain/

@@ -45,14 +45,14 @@ test_pipeline = [
     dict(type='CenterCrop', crop_size=518),
     dict(type='PackInputs'),
 ]
-data_dir = '/mnt/data/caw/classification'
+data_dir = '/mnt/c/caw/classification'
 train_dataloader = dict(
     batch_size=64,
     num_workers=10,
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,
-        ann_file='annotation/caw_train.txt',
+        ann_file='annotation/train.txt',
         pipeline=test_pipeline
     ),
     sampler=dict(type='DefaultSampler', shuffle=True),
@@ -64,7 +64,7 @@ val_dataloader = dict(
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,
-        ann_file='annotation/caw_val.txt',
+        ann_file='annotation/val.txt',
         pipeline=test_pipeline
     ),
     sampler=dict(type='DefaultSampler', shuffle=True),
@@ -76,7 +76,7 @@ test_dataloader = dict(
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,
-        ann_file='annotation/caw_test.txt',
+        ann_file='annotation/test.txt',
         pipeline=test_pipeline
     ),
     sampler=dict(type='DefaultSampler', shuffle=True),
@@ -84,7 +84,7 @@ test_dataloader = dict(
 )
 
 val_evaluator = dict(type='Accuracy', topk=(1, 5))
-test_evaluator = dict(type='Accuracy', topk=(1, 5))
+test_evaluator = dict(type='ConfusionMatrix')
 
 # optimizer
 optim_wrapper = dict(
