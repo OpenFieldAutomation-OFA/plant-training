@@ -1,5 +1,6 @@
 .venv/
 *.tar
+*.pth
 *.csv
 caw/
 cropandweed-dataset/

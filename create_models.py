@@ -5,10 +5,10 @@ import os
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--plantclef_model',
-                    default="model_best.pth.tar",
+                    default="/mnt/data/plantclef/pretrained/model_best.pth.tar",
                     help="Path to pretrained PlantCLEF model.")
 parser.add_argument('--model_dir',
-                    default="/root/weed-detection",
+                    default="/mnt/data/plantclef/pretrained",
                     help="Directory where models are saved.")
 args = parser.parse_args()
 
