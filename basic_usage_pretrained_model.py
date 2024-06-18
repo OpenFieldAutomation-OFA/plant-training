@@ -22,6 +22,7 @@ class_mapping = "preparation/class_mapping.txt"
 species_mapping = "species_id_to_name.txt"
 device = "cuda"
 
+test = torch.load(pretrained_path)
 
 cid_to_spid = load_class_mapping(class_mapping)
 spid_to_sp = load_species_mapping(species_mapping)
@@ -35,8 +36,6 @@ model = model.eval()
 # get model specific transforms (normalization, resize)
 data_config = timm.data.resolve_model_data_config(model)
 transforms = timm.data.create_transform(**data_config, is_training=False)
-
-test = model.state_dict()
 
 folder = "/mnt/data/seedlings/Maize"
 folder = "/mnt/data/OPPD/DATA/images_plants/CENCY"

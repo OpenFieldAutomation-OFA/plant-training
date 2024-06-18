@@ -11,13 +11,13 @@ model = dict(
     )
 )
 
+# dataset settings
 data_preprocessor = dict(
     num_classes=7806,
     mean=[123.675, 116.28, 103.53],
     std=[58.395, 57.12, 57.375],
     to_rgb=True,
 )
-
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(
@@ -45,8 +45,6 @@ test_pipeline = [
     dict(type='CenterCrop', crop_size=518),
     dict(type='PackInputs'),
 ]
-
-# datasets
 data_dir = '/mnt/data/caw/classification'
 train_dataloader = dict(
     batch_size=64,
@@ -92,7 +90,7 @@ test_evaluator = dict(type='Accuracy', topk=(1, 5))
 optim_wrapper = dict(
     type='AmpOptimWrapper',
     loss_scale='dynamic',
-    optimizer=dict(lr=1e-3,  # base_batch_size=1024
+    optimizer=dict(lr=1e-3,  # auto_scale_lr below
                    type='AdamW', weight_decay=0.05),
     paramwise_cfg=dict(
         custom_keys={
