@@ -7,7 +7,7 @@ model = dict(
     num_classes=7806,
     init_cfg=dict(
         type='Pretrained',
-        checkpoint='/mnt/data/plantclef/pretrained/model_best.pth.tar'
+        checkpoint='/mnt/data/plantclef/pretrained/plantclef.pth'
     )
 )
 
@@ -110,7 +110,7 @@ param_scheduler = dict(
 train_cfg = dict(by_epoch=True, max_epochs=15, val_interval=1)
 val_cfg = dict()
 test_cfg = dict()
-default_hooks = dict(checkpoint=dict(max_keep_ckpts=3))
+default_hooks = dict(checkpoint=dict(max_keep_ckpts=5))
 randomness = dict(deterministic=True, seed=0)
 
 # Will automatically scale learning rate to batch_size
