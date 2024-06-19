@@ -18,8 +18,13 @@ export CUBLAS_WORKSPACE_CONFIG=:4096:8
 python mmpretrain/tools/train.py plantclef-pretrained.py
 ```
 
-Two gpus:
+Two gpus different jobs:
 ```bash
 CUDA_VISIBLE_DEVICES=0 PORT=29500 bash mmpretrain/tools/dist_train.sh plantclef-pretrained.py 1
 CUDA_VISIBLE_DEVICES=1 PORT=29501 bash mmpretrain/tools/dist_train.sh dinov2-pretrained.py 1
+```
+
+Two gpus same job:
+```bash
+PORT=29666 bash mmpretrain/tools/dist_train.sh plantclef-pretrained.py 8
 ```

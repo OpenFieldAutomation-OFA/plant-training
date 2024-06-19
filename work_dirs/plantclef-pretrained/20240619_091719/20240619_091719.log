@@ -1,4 +1,4 @@
-2024/06/18 14:14:22 - mmengine - INFO - 
+2024/06/19 09:17:20 - mmengine - INFO - 
 ------------------------------------------------------------
 System environment:
     sys.platform: linux
@@ -36,14 +36,14 @@ Runtime environment:
     dist_cfg: {'backend': 'nccl'}
     seed: 0
     deterministic: True
-    Distributed launcher: none
-    Distributed training: False
-    GPU number: 1
+    Distributed launcher: pytorch
+    Distributed training: True
+    GPU number: 2
 ------------------------------------------------------------
 
-2024/06/18 14:14:22 - mmengine - INFO - Config:
+2024/06/19 09:17:20 - mmengine - INFO - Config:
 auto_scale_lr = dict(base_batch_size=1024)
-data_dir = '/mnt/data/caw/classification'
+data_dir = '/mnt/data'
 data_preprocessor = dict(
     mean=[
         123.675,
@@ -69,13 +69,12 @@ env_cfg = dict(
     cudnn_benchmark=False,
     dist_cfg=dict(backend='nccl'),
     mp_cfg=dict(mp_start_method='fork', opencv_num_threads=0))
-launcher = 'none'
-load_from = '/mnt/data/plantclef.pth'
+launcher = 'pytorch'
+load_from = 'work_dirs/plantclef-pretrained/epoch_9.pth'
 log_level = 'INFO'
 model = dict(
     init_cfg=dict(
-        checkpoint='/mnt/data/plantclef/pretrained/plantclef.pth',
-        type='Pretrained'),
+        checkpoint='/mnt/data/pretrained/plantclef.pth', type='Pretrained'),
     model_name='vit_base_patch14_reg4_dinov2.lvd142m',
     num_classes=7806,
     type='TimmClassifier')
@@ -94,8 +93,8 @@ test_dataloader = dict(
     batch_size=128,
     collate_fn=dict(type='default_collate'),
     dataset=dict(
-        ann_file='annotation/caw_test.txt',
-        data_prefix='/mnt/data/caw/classification',
+        ann_file='annotation/maize.txt',
+        data_prefix='/mnt/data',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(
@@ -132,8 +131,8 @@ train_cfg = dict(by_epoch=True, max_epochs=15, val_interval=1)
 train_dataloader = dict(
     batch_size=64,
     dataset=dict(
-        ann_file='annotation/caw_train.txt',
-        data_prefix='/mnt/data/caw/classification',
+        ann_file='annotation/train.txt',
+        data_prefix='/mnt/data',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(
@@ -164,8 +163,8 @@ val_cfg = dict()
 val_dataloader = dict(
     batch_size=128,
     dataset=dict(
-        ann_file='annotation/caw_val.txt',
-        data_prefix='/mnt/data/caw/classification',
+        ann_file='annotation/val.txt',
+        data_prefix='/mnt/data',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(
@@ -195,8 +194,7 @@ visualizer = dict(
     ])
 work_dir = './work_dirs/plantclef-pretrained'
 
-2024/06/18 14:14:24 - mmengine - INFO - Distributed training is not used, all SyncBatchNorm (SyncBN) layers in the model will be automatically reverted to BatchNormXd layers if they are used.
-2024/06/18 14:14:24 - mmengine - INFO - Hooks will be executed in the following order:
+2024/06/19 09:17:23 - mmengine - INFO - Hooks will be executed in the following order:
 before_run:
 (VERY_HIGH   ) RuntimeInfoHook                    
 (BELOW_NORMAL) LoggerHook                         
@@ -280,5 +278,5 @@ after_test:
 after_run:
 (BELOW_NORMAL) LoggerHook                         
  -------------------- 
-2024/06/18 14:14:25 - mmengine - INFO - Load checkpoint from /mnt/data/plantclef.pth
-2024/06/18 14:15:53 - mmengine - INFO - Epoch(test) [30/30]    accuracy/top1: 74.9532  accuracy/top5: 92.1946  data_time: 0.0641  time: 2.9468
+2024/06/19 09:17:24 - mmengine - INFO - Load checkpoint from work_dirs/plantclef-pretrained/epoch_9.pth
+2024/06/19 09:17:29 - mmengine - INFO - Epoch(test) [2/2]    accuracy/top1: 94.9458  accuracy/top5: 98.9170  data_time: 0.7382  time: 2.3617
