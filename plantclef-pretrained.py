@@ -7,7 +7,7 @@ model = dict(
     num_classes=7806,
     init_cfg=dict(
         type='Pretrained',
-        checkpoint='/mnt/data/pretrained/dinov2.pth'
+        checkpoint='/mnt/data/pretrained/plantclef_empty_head.pth'
     )
 )
 
