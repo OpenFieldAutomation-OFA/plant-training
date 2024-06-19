@@ -56,7 +56,8 @@ plantclef_metadata = 'PlantCLEF2024singleplanttrainingdata.csv'
 plantclef = pd.read_csv(plantclef_metadata, delimiter=";",
                         dtype={'partner': 'string'})
 
-relevant = plantclef[(plantclef['organ'] == 'leaf')]
+# relevant = plantclef[(plantclef['organ'] == 'leaf')]
+relevant = plantclef
 relevant['class'] = relevant['species_id'].map(class_mappings)
 relevant['filename'] = relevant['species_id'].astype(str) + '/' + relevant['image_name']
 relevant = relevant[['filename', 'class', 'learn_tag']]
