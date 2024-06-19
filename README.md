@@ -26,5 +26,5 @@ CUDA_VISIBLE_DEVICES=1 PORT=29501 bash mmpretrain/tools/dist_train.sh dinov2-pre
 
 Two gpus same job:
 ```bash
-PORT=29666 bash mmpretrain/tools/dist_train.sh plantclef-pretrained.py 2
+PORT=29666 bash mmpretrain/tools/dist_train.sh plantclef-pretrained.py 8
 ```

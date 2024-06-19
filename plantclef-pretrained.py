@@ -7,7 +7,7 @@ model = dict(
     num_classes=7806,
     init_cfg=dict(
         type='Pretrained',
-        checkpoint='/mnt/data/pretrained/plantclef.pth'
+        checkpoint='/mnt/data/pretrained/dinov2.pth'
     )
 )
 
@@ -47,8 +47,8 @@ test_pipeline = [
 ]
 data_dir = '/mnt/data'
 train_dataloader = dict(
-    batch_size=64,
-    num_workers=10,
+    batch_size=16,
+    num_workers=48,
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,
@@ -76,7 +76,7 @@ test_dataloader = dict(
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,
-        ann_file='annotation/maize.txt',
+        ann_file='annotation/plantclef_val.txt',
         pipeline=test_pipeline
     ),
     sampler=dict(type='DefaultSampler', shuffle=True),

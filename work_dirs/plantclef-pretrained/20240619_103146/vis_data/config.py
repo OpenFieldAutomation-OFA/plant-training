@@ -1,5 +1,5 @@
 auto_scale_lr = dict(base_batch_size=1024)
-data_dir = '/mnt/data/caw/classification'
+data_dir = '/mnt/data'
 data_preprocessor = dict(
     mean=[
         123.675,
@@ -26,12 +26,11 @@ env_cfg = dict(
     dist_cfg=dict(backend='nccl'),
     mp_cfg=dict(mp_start_method='fork', opencv_num_threads=0))
 launcher = 'none'
-load_from = '/mnt/data/plantclef.pth'
+load_from = '/mnt/data/pretrained/plantclef.pth'
 log_level = 'INFO'
 model = dict(
     init_cfg=dict(
-        checkpoint='/mnt/data/plantclef/pretrained/plantclef.pth',
-        type='Pretrained'),
+        checkpoint='/mnt/data/pretrained/dinov2.pth', type='Pretrained'),
     model_name='vit_base_patch14_reg4_dinov2.lvd142m',
     num_classes=7806,
     type='TimmClassifier')
@@ -50,8 +49,8 @@ test_dataloader = dict(
     batch_size=128,
     collate_fn=dict(type='default_collate'),
     dataset=dict(
-        ann_file='annotation/caw_test.txt',
-        data_prefix='/mnt/data/caw/classification',
+        ann_file='annotation/plantclef_val.txt',
+        data_prefix='/mnt/data',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(
@@ -86,10 +85,10 @@ test_pipeline = [
 ]
 train_cfg = dict(by_epoch=True, max_epochs=15, val_interval=1)
 train_dataloader = dict(
-    batch_size=64,
+    batch_size=16,
     dataset=dict(
-        ann_file='annotation/caw_train.txt',
-        data_prefix='/mnt/data/caw/classification',
+        ann_file='annotation/train.txt',
+        data_prefix='/mnt/data',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(
@@ -102,7 +101,7 @@ train_dataloader = dict(
             dict(type='PackInputs'),
         ],
         type='CustomDataset'),
-    num_workers=10,
+    num_workers=48,
     persistent_workers=True,
     sampler=dict(shuffle=True, type='DefaultSampler'))
 train_pipeline = [
@@ -120,8 +119,8 @@ val_cfg = dict()
 val_dataloader = dict(
     batch_size=128,
     dataset=dict(
-        ann_file='annotation/caw_val.txt',
-        data_prefix='/mnt/data/caw/classification',
+        ann_file='annotation/val.txt',
+        data_prefix='/mnt/data',
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(
