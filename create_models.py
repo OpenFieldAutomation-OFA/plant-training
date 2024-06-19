@@ -6,10 +6,10 @@ import torch.nn as nn
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--plantclef_model',
-                    default="model_best.pth.tar",
+                    default="/mnt/data/pretrained/model_best.pth.tar",
                     help="Path to pretrained PlantCLEF model.")
 parser.add_argument('--model_dir',
-                    default="/mnt/data/plantclef2/pretrained",
+                    default="/mnt/data/pretrained",
                     help="Directory where models are saved.")
 args = parser.parse_args()
 
