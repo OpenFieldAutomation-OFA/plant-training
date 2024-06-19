@@ -7,7 +7,7 @@ model = dict(
     num_classes=7806,
     init_cfg=dict(
         type='Pretrained',
-        checkpoint='/mnt/data/plantclef/pretrained/plantclef.pth'
+        checkpoint='/mnt/data/pretrained/plantclef.pth'
     )
 )
 
@@ -45,7 +45,7 @@ test_pipeline = [
     dict(type='CenterCrop', crop_size=518),
     dict(type='PackInputs'),
 ]
-data_dir = '/mnt/c/caw/classification'
+data_dir = '/mnt/data'
 train_dataloader = dict(
     batch_size=64,
     num_workers=10,
@@ -76,7 +76,7 @@ test_dataloader = dict(
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,
-        ann_file='annotation/test.txt',
+        ann_file='annotation/maize.txt',
         pipeline=test_pipeline
     ),
     sampler=dict(type='DefaultSampler', shuffle=True),
@@ -84,7 +84,7 @@ test_dataloader = dict(
 )
 
 val_evaluator = dict(type='Accuracy', topk=(1, 5))
-test_evaluator = dict(type='ConfusionMatrix')
+test_evaluator = dict(type='Accuracy', topk=(1, 5))
 
 # optimizer
 optim_wrapper = dict(

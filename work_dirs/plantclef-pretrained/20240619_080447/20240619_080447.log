@@ -1,0 +1,282 @@
+2024/06/19 08:04:48 - mmengine - INFO - 
+------------------------------------------------------------
+System environment:
+    sys.platform: linux
+    Python: 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0]
+    CUDA available: True
+    MUSA available: False
+    numpy_random_seed: 0
+    GPU 0,1: NVIDIA RTX A6000
+    CUDA_HOME: /usr/local/cuda
+    NVCC: Cuda compilation tools, release 12.3, V12.3.107
+    GCC: x86_64-linux-gnu-gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+    PyTorch: 2.3.1+cu121
+    PyTorch compiling details: PyTorch built with:
+  - GCC 9.3
+  - C++ Version: 201703
+  - Intel(R) oneAPI Math Kernel Library Version 2022.2-Product Build 20220804 for Intel(R) 64 architecture applications
+  - Intel(R) MKL-DNN v3.3.6 (Git Hash 86e6af5974177e513fd3fee58425e1063e7f1361)
+  - OpenMP 201511 (a.k.a. OpenMP 4.5)
+  - LAPACK is enabled (usually provided by MKL)
+  - NNPACK is enabled
+  - CPU capability usage: AVX2
+  - CUDA Runtime 12.1
+  - NVCC architecture flags: -gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_70,code=sm_70;-gencode;arch=compute_75,code=sm_75;-gencode;arch=compute_80,code=sm_80;-gencode;arch=compute_86,code=sm_86;-gencode;arch=compute_90,code=sm_90
+  - CuDNN 8.9.2
+  - Magma 2.6.1
+  - Build settings: BLAS_INFO=mkl, BUILD_TYPE=Release, CUDA_VERSION=12.1, CUDNN_VERSION=8.9.2, CXX_COMPILER=/opt/rh/devtoolset-9/root/usr/bin/c++, CXX_FLAGS= -D_GLIBCXX_USE_CXX11_ABI=0 -fabi-version=11 -fvisibility-inlines-hidden -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO -DLIBKINETO_NOROCTRACER -DUSE_FBGEMM -DUSE_QNNPACK -DUSE_PYTORCH_QNNPACK -DUSE_XNNPACK -DSYMBOLICATE_MOBILE_DEBUG_HANDLE -O2 -fPIC -Wall -Wextra -Werror=return-type -Werror=non-virtual-dtor -Werror=bool-operation -Wnarrowing -Wno-missing-field-initializers -Wno-type-limits -Wno-array-bounds -Wno-unknown-pragmas -Wno-unused-parameter -Wno-unused-function -Wno-unused-result -Wno-strict-overflow -Wno-strict-aliasing -Wno-stringop-overflow -Wsuggest-override -Wno-psabi -Wno-error=pedantic -Wno-error=old-style-cast -Wno-missing-braces -fdiagnostics-color=always -faligned-new -Wno-unused-but-set-variable -Wno-maybe-uninitialized -fno-math-errno -fno-trapping-math -Werror=format -Wno-stringop-overflow, LAPACK_INFO=mkl, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, PERF_WITH_AVX512=1, TORCH_VERSION=2.3.1, USE_CUDA=ON, USE_CUDNN=ON, USE_CUSPARSELT=1, USE_EXCEPTION_PTR=1, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_GLOO=ON, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=1, USE_NNPACK=ON, USE_OPENMP=ON, USE_ROCM=OFF, USE_ROCM_KERNEL_ASSERT=OFF, 
+
+    TorchVision: 0.18.1+cu121
+    OpenCV: 4.10.0
+    MMEngine: 0.10.4
+
+Runtime environment:
+    cudnn_benchmark: False
+    mp_cfg: {'mp_start_method': 'fork', 'opencv_num_threads': 0}
+    dist_cfg: {'backend': 'nccl'}
+    seed: 0
+    deterministic: True
+    Distributed launcher: pytorch
+    Distributed training: True
+    GPU number: 2
+------------------------------------------------------------
+
+2024/06/19 08:04:48 - mmengine - INFO - Config:
+auto_scale_lr = dict(base_batch_size=1024)
+data_dir = '/mnt/data'
+data_preprocessor = dict(
+    mean=[
+        123.675,
+        116.28,
+        103.53,
+    ],
+    num_classes=7806,
+    std=[
+        58.395,
+        57.12,
+        57.375,
+    ],
+    to_rgb=True)
+default_hooks = dict(
+    checkpoint=dict(interval=1, max_keep_ckpts=5, type='CheckpointHook'),
+    logger=dict(interval=100, type='LoggerHook'),
+    param_scheduler=dict(type='ParamSchedulerHook'),
+    sampler_seed=dict(type='DistSamplerSeedHook'),
+    timer=dict(type='IterTimerHook'),
+    visualization=dict(enable=False, type='VisualizationHook'))
+default_scope = 'mmpretrain'
+env_cfg = dict(
+    cudnn_benchmark=False,
+    dist_cfg=dict(backend='nccl'),
+    mp_cfg=dict(mp_start_method='fork', opencv_num_threads=0))
+launcher = 'pytorch'
+load_from = '/mnt/data/pretrained/plantclef.pth'
+log_level = 'INFO'
+model = dict(
+    init_cfg=dict(
+        checkpoint='/mnt/data/pretrained/plantclef.pth', type='Pretrained'),
+    model_name='vit_base_patch14_reg4_dinov2.lvd142m',
+    num_classes=7806,
+    type='TimmClassifier')
+optim_wrapper = dict(
+    loss_scale='dynamic',
+    optimizer=dict(lr=0.001, type='AdamW', weight_decay=0.05),
+    paramwise_cfg=dict(
+        custom_keys=dict(
+            cls_token=dict(decay_mult=0.0), mask_token=dict(decay_mult=0.0))),
+    type='AmpOptimWrapper')
+param_scheduler = dict(by_epoch=True, type='CosineAnnealingLR')
+randomness = dict(deterministic=True, seed=0)
+resume = False
+test_cfg = dict()
+test_dataloader = dict(
+    batch_size=128,
+    collate_fn=dict(type='default_collate'),
+    dataset=dict(
+        ann_file='annotation/plantclef_val.txt',
+        data_prefix='/mnt/data',
+        pipeline=[
+            dict(type='LoadImageFromFile'),
+            dict(
+                backend='pillow',
+                edge='short',
+                interpolation='bicubic',
+                scale=518,
+                type='ResizeEdge'),
+            dict(crop_size=518, type='CenterCrop'),
+            dict(type='PackInputs'),
+        ],
+        type='CustomDataset'),
+    num_workers=10,
+    persistent_workers=True,
+    pin_memory=True,
+    sampler=dict(shuffle=True, type='DefaultSampler'))
+test_evaluator = dict(
+    topk=(
+        1,
+        5,
+    ), type='Accuracy')
+test_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(
+        backend='pillow',
+        edge='short',
+        interpolation='bicubic',
+        scale=518,
+        type='ResizeEdge'),
+    dict(crop_size=518, type='CenterCrop'),
+    dict(type='PackInputs'),
+]
+train_cfg = dict(by_epoch=True, max_epochs=15, val_interval=1)
+train_dataloader = dict(
+    batch_size=64,
+    dataset=dict(
+        ann_file='annotation/train.txt',
+        data_prefix='/mnt/data',
+        pipeline=[
+            dict(type='LoadImageFromFile'),
+            dict(
+                backend='pillow',
+                edge='short',
+                interpolation='bicubic',
+                scale=518,
+                type='ResizeEdge'),
+            dict(crop_size=518, type='CenterCrop'),
+            dict(type='PackInputs'),
+        ],
+        type='CustomDataset'),
+    num_workers=10,
+    persistent_workers=True,
+    sampler=dict(shuffle=True, type='DefaultSampler'))
+train_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(
+        backend='pillow',
+        interpolation='bicubic',
+        scale=518,
+        type='RandomResizedCrop'),
+    dict(direction='horizontal', prob=0.5, type='RandomFlip'),
+    dict(brightness=0.4, contrast=0.4, saturation=0.4, type='ColorJitter'),
+    dict(type='PackInputs'),
+]
+val_cfg = dict()
+val_dataloader = dict(
+    batch_size=128,
+    dataset=dict(
+        ann_file='annotation/val.txt',
+        data_prefix='/mnt/data',
+        pipeline=[
+            dict(type='LoadImageFromFile'),
+            dict(
+                backend='pillow',
+                edge='short',
+                interpolation='bicubic',
+                scale=518,
+                type='ResizeEdge'),
+            dict(crop_size=518, type='CenterCrop'),
+            dict(type='PackInputs'),
+        ],
+        type='CustomDataset'),
+    num_workers=10,
+    persistent_workers=True,
+    sampler=dict(shuffle=True, type='DefaultSampler'))
+val_evaluator = dict(
+    topk=(
+        1,
+        5,
+    ), type='Accuracy')
+vis_backends = [
+    dict(type='LocalVisBackend'),
+]
+visualizer = dict(
+    type='UniversalVisualizer', vis_backends=[
+        dict(type='LocalVisBackend'),
+    ])
+work_dir = './work_dirs/plantclef-pretrained'
+
+2024/06/19 08:04:50 - mmengine - INFO - Hooks will be executed in the following order:
+before_run:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+before_train:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+before_train_epoch:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(NORMAL      ) DistSamplerSeedHook                
+ -------------------- 
+before_train_iter:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+after_train_iter:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(BELOW_NORMAL) LoggerHook                         
+(LOW         ) ParamSchedulerHook                 
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+after_train_epoch:
+(NORMAL      ) IterTimerHook                      
+(LOW         ) ParamSchedulerHook                 
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+before_val:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+before_val_epoch:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+before_val_iter:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+after_val_iter:
+(NORMAL      ) IterTimerHook                      
+(NORMAL      ) VisualizationHook                  
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+after_val_epoch:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(BELOW_NORMAL) LoggerHook                         
+(LOW         ) ParamSchedulerHook                 
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+after_val:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+after_train:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+before_test:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+before_test_epoch:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+before_test_iter:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+after_test_iter:
+(NORMAL      ) IterTimerHook                      
+(NORMAL      ) VisualizationHook                  
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+after_test_epoch:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+after_test:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+after_run:
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+2024/06/19 08:04:51 - mmengine - INFO - Load checkpoint from /mnt/data/pretrained/plantclef.pth
+2024/06/19 08:06:24 - mmengine - INFO - Epoch(test) [29/29]    accuracy/top1: 66.1441  accuracy/top5: 87.8497  data_time: 0.1196  time: 3.0605
