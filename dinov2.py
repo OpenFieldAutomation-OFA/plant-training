@@ -21,17 +21,9 @@ model = dict(
         type='VisionTransformerClsHead',
         num_classes=7806,
         in_channels=768,
-        loss=dict(
-            type='LabelSmoothLoss', label_smooth_val=0.1, mode='original'
-        ),
+        loss=dict(type='CrossEntropyLoss'),
         topk=(1, 5),
     ),
-    train_cfg=dict(
-        augments=[
-            dict(type='Mixup', alpha=0.8),
-            dict(type='CutMix', alpha=1.0),
-        ]
-    )
 )
 
 # dataset settings
@@ -50,12 +42,6 @@ train_pipeline = [
         scale=518
     ),
     dict(type='RandomFlip', prob=0.5, direction='horizontal'),
-    dict(
-        type='ColorJitter',
-        brightness=0.4,
-        contrast=0.4,
-        saturation=0.4
-    ),
     dict(type='PackInputs'),
 ]
 test_pipeline = [
@@ -70,8 +56,8 @@ test_pipeline = [
 ]
 data_dir = '/mnt/data'
 train_dataloader = dict(
-    batch_size=128,
-    num_workers=48,
+    batch_size=256,
+    num_workers=24,
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,
@@ -83,7 +69,7 @@ train_dataloader = dict(
 )
 val_dataloader = dict(
     batch_size=128,
-    num_workers=10,
+    num_workers=24,
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,
@@ -95,11 +81,11 @@ val_dataloader = dict(
 )
 test_dataloader = dict(
     batch_size=128,
-    num_workers=10,
+    num_workers=24,
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,
-        ann_file='annotation/caw_val.txt',
+        ann_file='annotation/val.txt',
         pipeline=test_pipeline
     ),
     sampler=dict(type='DefaultSampler', shuffle=True),
@@ -136,7 +122,10 @@ param_scheduler = [
 train_cfg = dict(by_epoch=True, max_epochs=20, val_interval=1)
 val_cfg = dict()
 test_cfg = dict()
-default_hooks = dict(checkpoint=dict(max_keep_ckpts=5))
+default_hooks = dict(
+    checkpoint=dict(max_keep_ckpts=5),
+    logger=dict(interval=50)
+)
 randomness = dict(deterministic=True, seed=0)
 
 # Will automatically scale learning rate to batch_size

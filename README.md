@@ -15,13 +15,13 @@ See `preparation` folder.
 # Fine-tuning
 ```bash
 export CUBLAS_WORKSPACE_CONFIG=:4096:8
-python mmpretrain/tools/train.py plantclef-pretrained.py
+python mmpretrain/tools/train.py dinov2.py
 ```
 
 Two gpus different jobs:
 ```bash
-CUDA_VISIBLE_DEVICES=0 PORT=29500 bash mmpretrain/tools/dist_train.sh plantclef-pretrained.py 1
-CUDA_VISIBLE_DEVICES=1 PORT=29501 bash mmpretrain/tools/dist_train.sh dinov2-pretrained.py 1
+CUDA_VISIBLE_DEVICES=0,1,2,3 PORT=29500 bash mmpretrain/tools/dist_train.sh dinov2.py 4
+CUDA_VISIBLE_DEVICES=4,5,6,7 PORT=29501 bash mmpretrain/tools/dist_train.sh dinov2-nomix.py 4
 ```
 
 Two gpus same job:
