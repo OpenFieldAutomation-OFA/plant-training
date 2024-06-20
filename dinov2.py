@@ -19,7 +19,7 @@ model = dict(
     neck=None,
     head=dict(
         type='VisionTransformerClsHead',
-        num_classes=7608,
+        num_classes=7806,
         in_channels=768,
         loss=dict(
             type='LabelSmoothLoss', label_smooth_val=0.1, mode='original'
@@ -65,12 +65,13 @@ test_pipeline = [
          edge='short',
          interpolation='bicubic',
          scale=518),
+    dict(type='CenterCrop', crop_size=518),
     dict(type='PackInputs'),
 ]
 data_dir = '/mnt/data'
 train_dataloader = dict(
-    batch_size=16,
-    num_workers=48,
+    batch_size=128,
+    num_workers=24,
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,
@@ -98,7 +99,7 @@ test_dataloader = dict(
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,
-        ann_file='annotation/plantclef_val.txt',
+        ann_file='annotation/val.txt',
         pipeline=test_pipeline
     ),
     sampler=dict(type='DefaultSampler', shuffle=True),
@@ -125,28 +126,14 @@ optim_wrapper = dict(
 
 # learning rate scheduler
 param_scheduler = [
-    # warm up learning rate scheduler
-    dict(
-        type='LinearLR',
-        start_factor=0.01,
-        by_epoch=True,
-        begin=0,
-        end=5,
-        # update by iter
-        convert_to_iter_based=True
-    ),
-    # main learning rate scheduler
     dict(
         type='CosineAnnealingLR',
-        T_max=25,
         by_epoch=True,
-        begin=5,
-        end=30,
     )
 ]
 
 # runtime settings
-train_cfg = dict(by_epoch=True, max_epochs=30, val_interval=1)
+train_cfg = dict(by_epoch=True, max_epochs=20, val_interval=1)
 val_cfg = dict()
 test_cfg = dict()
 default_hooks = dict(checkpoint=dict(max_keep_ckpts=5))
