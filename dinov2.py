@@ -71,7 +71,7 @@ test_pipeline = [
 data_dir = '/mnt/data'
 train_dataloader = dict(
     batch_size=128,
-    num_workers=24,
+    num_workers=48,
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,
@@ -99,7 +99,7 @@ test_dataloader = dict(
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,
-        ann_file='annotation/val.txt',
+        ann_file='annotation/caw_val.txt',
         pipeline=test_pipeline
     ),
     sampler=dict(type='DefaultSampler', shuffle=True),
@@ -114,7 +114,7 @@ optim_wrapper = dict(
     type='AmpOptimWrapper',
     loss_scale='dynamic',
     clip_grad=dict(max_norm=1.0),
-    optimizer=dict(lr=1e-3,  # auto_scale_lr below
+    optimizer=dict(lr=1e-5,  # auto_scale_lr below
                    type='AdamW', weight_decay=0.05),
     paramwise_cfg=dict(
         custom_keys={
