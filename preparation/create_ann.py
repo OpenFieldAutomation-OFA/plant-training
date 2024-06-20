@@ -56,16 +56,21 @@ plantclef_metadata = 'PlantCLEF2024singleplanttrainingdata.csv'
 plantclef = pd.read_csv(plantclef_metadata, delimiter=";",
                         dtype={'partner': 'string'})
 
-# relevant = plantclef[(plantclef['organ'] == 'leaf')]
-relevant = plantclef
-relevant['class'] = relevant['species_id'].map(class_mappings)
-relevant['filename'] = relevant['species_id'].astype(str) + '/' + relevant['image_name']
-relevant = relevant[['filename', 'class', 'learn_tag']]
+plantclef['class'] = plantclef['species_id'].map(class_mappings)
+plantclef['filename'] = plantclef['species_id'].astype(str) + '/' + plantclef['image_name']
 
-train_plantclef = relevant[relevant['learn_tag'] == 'train'].drop('learn_tag',
+leaf = plantclef[(plantclef['organ'] == 'leaf')][['filename', 'class', 'learn_tag']]
+train_leaf = leaf[leaf['learn_tag'] == 'train'].drop('learn_tag',
                                                              axis=1)
-val_plantclef = relevant[relevant['learn_tag'] == 'val'].drop('learn_tag', axis=1)
-test_plantclef = relevant[relevant['learn_tag'] == 'test'].drop('learn_tag', axis=1)
+val_leaf = leaf[leaf['learn_tag'] == 'val'].drop('learn_tag', axis=1)
+test_leaf = leaf[leaf['learn_tag'] == 'test'].drop('learn_tag', axis=1)
+
+
+plantclef = plantclef[['filename', 'class', 'learn_tag']]
+train_plantclef = plantclef[plantclef['learn_tag'] == 'train'].drop('learn_tag',
+                                                             axis=1)
+val_plantclef = plantclef[plantclef['learn_tag'] == 'val'].drop('learn_tag', axis=1)
+test_plantclef = plantclef[plantclef['learn_tag'] == 'test'].drop('learn_tag', axis=1)
 
 train_plantclef['filename'] = 'plantclef' + '/' + 'train' + '/' + train_plantclef['filename']
 val_plantclef['filename'] = 'plantclef' + '/' + 'val' + '/' + val_plantclef['filename']
@@ -89,6 +94,12 @@ train_plantclef.to_csv(os.path.join(dirname, '../annotation/plantclef_train.txt'
 val_plantclef.to_csv(os.path.join(dirname, '../annotation/plantclef_val.txt'), sep=' ', header=None,
                  index=False)
 test_plantclef.to_csv(os.path.join(dirname, '../annotation/plantclef_test.txt'), sep=' ', header=None,
+                index=False)
+train_leaf.to_csv(os.path.join(dirname, '../annotation/leaf_train.txt'), sep=' ', header=None,
+                  index=False)
+val_leaf.to_csv(os.path.join(dirname, '../annotation/leaf_val.txt'), sep=' ', header=None,
+                 index=False)
+test_leaf.to_csv(os.path.join(dirname, '../annotation/leaf_test.txt'), sep=' ', header=None,
                 index=False)
 train.to_csv(os.path.join(dirname, '../annotation/train.txt'), sep=' ', header=None,
                   index=False)
