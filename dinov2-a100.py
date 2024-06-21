@@ -56,8 +56,8 @@ test_pipeline = [
 ]
 data_dir = '/mnt/data'
 train_dataloader = dict(
-    batch_size=256,
-    num_workers=24,
+    batch_size=1024,
+    num_workers=44,
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,
@@ -69,7 +69,7 @@ train_dataloader = dict(
 )
 val_dataloader = dict(
     batch_size=128,
-    num_workers=24,
+    num_workers=44,
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,
@@ -81,7 +81,7 @@ val_dataloader = dict(
 )
 test_dataloader = dict(
     batch_size=128,
-    num_workers=24,
+    num_workers=44,
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,
@@ -124,7 +124,7 @@ val_cfg = dict()
 test_cfg = dict()
 default_hooks = dict(
     checkpoint=dict(max_keep_ckpts=5),
-    logger=dict(interval=50)
+    logger=dict(interval=25)
 )
 randomness = dict(deterministic=True, seed=0)
 
