@@ -57,7 +57,7 @@ test_pipeline = [
 data_dir = '/mnt/data'
 train_dataloader = dict(
     batch_size=1024,
-    num_workers=44,
+    num_workers=30,
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,
@@ -68,8 +68,8 @@ train_dataloader = dict(
     persistent_workers=True,
 )
 val_dataloader = dict(
-    batch_size=128,
-    num_workers=44,
+    batch_size=1024,
+    num_workers=30,
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,
@@ -80,8 +80,8 @@ val_dataloader = dict(
     persistent_workers=True,
 )
 test_dataloader = dict(
-    batch_size=128,
-    num_workers=44,
+    batch_size=1024,
+    num_workers=30,
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,
@@ -99,8 +99,7 @@ test_evaluator = dict(type='Accuracy', topk=(1, 5))
 optim_wrapper = dict(
     type='AmpOptimWrapper',
     loss_scale='dynamic',
-    clip_grad=dict(max_norm=1.0),
-    optimizer=dict(lr=1e-5,  # auto_scale_lr below
+    optimizer=dict(lr=1e-4,  # auto_scale_lr below
                    type='AdamW', weight_decay=0.05),
     paramwise_cfg=dict(
         custom_keys={
