@@ -76,6 +76,10 @@ train_plantclef['filename'] = 'plantclef' + '/' + 'train' + '/' + train_plantcle
 val_plantclef['filename'] = 'plantclef' + '/' + 'val' + '/' + val_plantclef['filename']
 test_plantclef['filename'] = 'plantclef' + '/' + 'test' + '/' + test_plantclef['filename']
 
+train_leaf['filename'] = 'plantclef' + '/' + 'train' + '/' + train_leaf['filename']
+val_leaf['filename'] = 'plantclef' + '/' + 'val' + '/' + val_leaf['filename']
+test_leaf['filename'] = 'plantclef' + '/' + 'test' + '/' + test_leaf['filename']
+
 train = pd.concat([train_caw, train_plantclef])
 val = pd.concat([val_caw, val_plantclef])
 test = pd.concat([test_caw, test_plantclef])
