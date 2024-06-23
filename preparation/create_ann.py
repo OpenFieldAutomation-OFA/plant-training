@@ -3,7 +3,7 @@ import os
 import pandas as pd
 
 """
-This script creates the CAW classification annotation files for MMPretrain.
+This script creates the annotation files for MMPretrain.
 """
 
 parser = argparse.ArgumentParser()
