@@ -80,6 +80,10 @@ train = pd.concat([train_caw, train_plantclef])
 val = pd.concat([val_caw, val_plantclef])
 test = pd.concat([test_caw, test_plantclef])
 
+train_2 = pd.concat([train_caw, train_leaf])
+val_2 = pd.concat([val_caw, val_leaf])
+test_2 = pd.concat([test_caw, test_leaf])
+
 only_maize = val[(val['class'] == 2473)]
 
 # save annotation files
@@ -107,5 +111,11 @@ val.to_csv(os.path.join(dirname, '../annotation/val.txt'), sep=' ', header=None,
                  index=False)
 test.to_csv(os.path.join(dirname, '../annotation/test.txt'), sep=' ', header=None,
                  index=False)
+train_2.to_csv(os.path.join(dirname, '../annotation/train_2.txt'), sep=' ', header=None,
+                  index=False)
+val_2.to_csv(os.path.join(dirname, '../annotation/val_2.txt'), sep=' ', header=None,
+                 index=False)
+test_2.to_csv(os.path.join(dirname, '../annotation/test_2.txt'), sep=' ', header=None,
+                index=False)
 only_maize.to_csv(os.path.join(dirname, '../annotation/maize.txt'), sep=' ', header=None,
                  index=False)
