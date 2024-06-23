@@ -26,7 +26,7 @@ CUDA_VISIBLE_DEVICES=4,5,6,7 PORT=29501 bash mmpretrain/tools/dist_train.sh dino
 
 Two gpus same job:
 ```bash
-bash mmpretrain/tools/dist_train.sh dinov2-a100.py 2
+bash mmpretrain/tools/dist_train.sh leafcaw.py 1
 ```
 
 Test:

@@ -85,7 +85,7 @@ test_dataloader = dict(
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,
-        ann_file='annotation/val.txt',
+        ann_file='annotation/test.txt',
         pipeline=test_pipeline
     ),
     sampler=dict(type='DefaultSampler', shuffle=True),
