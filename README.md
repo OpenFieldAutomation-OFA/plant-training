@@ -15,7 +15,7 @@ See `preparation` folder.
 # Fine-tuning
 ```bash
 export CUBLAS_WORKSPACE_CONFIG=:4096:8
-python mmpretrain/tools/train.py dinov2.py
+python mmpretrain/tools/train.py caw.py
 ```
 
 Two gpus different jobs:

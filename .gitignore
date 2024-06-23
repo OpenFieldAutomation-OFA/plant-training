@@ -2,7 +2,6 @@
 *.tar
 *.pth
 *.csv
-caw/
 cropandweed-dataset/
 mmpretrain/
 work_dirs/*/*.pth
