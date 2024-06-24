@@ -14,5 +14,5 @@ test_dataloader = dict(
     ),
 )
 
-val_evaluator = dict(_delete_=True, type='MaizeMetric')
-test_evaluator = dict(_delete_=True, type='MaizeMetric')
+# test_evaluator = dict(_delete_=True, type='BinaryMetric', class_id=2473) # maize
+test_evaluator = dict(_delete_=True, type='BinaryMetric', class_id=2354) # sugar beet

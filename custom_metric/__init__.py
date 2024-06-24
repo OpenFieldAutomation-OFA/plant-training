@@ -13,13 +13,12 @@ from .visual_grounding_eval import VisualGroundingMetric
 from .voc_multi_label import VOCAveragePrecision, VOCMultiLabelMetric
 from .vqa import ReportVQA, VQAAcc
 
-from .maize_metric import MaizeMetric
+from .binary import BinaryMetric
 
 __all__ = [
     'Accuracy', 'SingleLabelMetric', 'MultiLabelMetric', 'AveragePrecision',
     'MultiTasksMetric', 'VOCAveragePrecision', 'VOCMultiLabelMetric',
     'ConfusionMatrix', 'RetrievalRecall', 'VQAAcc', 'ReportVQA', 'COCOCaption',
     'VisualGroundingMetric', 'ScienceQAMetric', 'GQAAcc', 'NocapsSave',
-    'RetrievalAveragePrecision', 'ShapeBiasMetric', 'ANLS',
-    'MaizeMetric'
+    'RetrievalAveragePrecision', 'ShapeBiasMetric', 'ANLS', 'BinaryMetric'
 ]
