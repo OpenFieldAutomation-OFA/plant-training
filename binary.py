@@ -23,15 +23,16 @@ val_dataloader = dict(
 )
 test_dataloader = dict(
     dataset=dict(
-        ann_file='annotation_binary/test_2.txt',
+        ann_file='annotation_binary/caw_test.txt',
     ),
 )
 
 val_evaluator = [
   dict(type='Accuracy', topk=(1, )),
-  dict(type='SingleLabelMetric', items=['precision', 'recall']),
+  dict(type='SingleLabelMetric', items=['precision', 'recall'], average=None),
 ]
-test_evaluator = [
-  dict(type='Accuracy', topk=(1, )),
-  dict(type='SingleLabelMetric', items=['precision', 'recall']),
-]
+# test_evaluator = [
+#   dict(type='Accuracy', topk=(1, )),
+#   dict(type='SingleLabelMetric', items=['precision', 'recall'], average=None),
+# ]
+test_evaluator = dict(_delete_=True, type='BinaryMetric', class_id=1) # maize
