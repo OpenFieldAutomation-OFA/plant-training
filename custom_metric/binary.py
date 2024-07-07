@@ -57,5 +57,10 @@ class BinaryMetric(BaseMetric):
         else:
             rec = tp / (tp + fn)
         
-        return {'accuracy': acc, 'precision': prec, 'recall': rec,
+        if prec is not None and rec is not None:
+            f1 = 2 * prec * rec / (prec + rec)
+        else:
+            f1 = None
+        
+        return {'accuracy': acc, 'precision': prec, 'recall': rec, 'f1': f1,
                 'tp': tp, 'tn': tn, 'fp': fp, 'fn': fn}

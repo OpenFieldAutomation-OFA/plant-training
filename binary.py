@@ -29,9 +29,9 @@ test_dataloader = dict(
 
 val_evaluator = [
   dict(type='Accuracy', topk=(1, )),
-  dict(type='SingleLabelMetric', items=['precision', 'recall']),
+  dict(type='SingleLabelMetric', average=None),
 ]
 test_evaluator = [
   dict(type='Accuracy', topk=(1, )),
-  dict(type='SingleLabelMetric', items=['precision', 'recall']),
+  dict(type='SingleLabelMetric', average=None),
 ]
