@@ -85,7 +85,7 @@ test_dataloader = dict(
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,
-        ann_file='annotation/test.txt',
+        ann_file='annotation/caw_test.txt',
         pipeline=test_pipeline
     ),
     sampler=dict(type='DefaultSampler', shuffle=True),
@@ -93,7 +93,10 @@ test_dataloader = dict(
 )
 
 val_evaluator = dict(type='Accuracy', topk=(1, 5))
-test_evaluator = dict(type='Accuracy', topk=(1, 5))
+test_evaluator = [
+  dict(type='Accuracy', topk=(1, 5)),
+  dict(type='SingleLabelMetric'),
+]
 
 # optimizer
 optim_wrapper = dict(

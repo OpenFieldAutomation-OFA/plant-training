@@ -15,3 +15,8 @@ test_dataloader = dict(
         ann_file='annotation/caw_test.txt',
     ),
 )
+
+test_evaluator = [
+  dict(type='Accuracy', topk=(1, 5)),
+  dict(type='SingleLabelMetric'),
+]
