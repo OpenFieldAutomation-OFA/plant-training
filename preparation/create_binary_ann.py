@@ -15,6 +15,9 @@ parser.add_argument('--plantclef_dir',
                     help="Directory of PlantCLEF classification data.")
 args = parser.parse_args()
 
+class_id = 1363199  # sugar beet
+# class_id = 1363500  # maize
+
 dirname = os.path.dirname(__file__)
 
 #### CAW #####
@@ -31,7 +34,7 @@ for class_name in os.listdir(caw_dir):
 caw = pd.DataFrame({'filename': filenames, 'class': classes})
 
 
-caw['class'] = (caw['class'] == 1363500).astype(int)
+caw['class'] = (caw['class'] == class_id).astype(int)
 
 # shuffle dataframe
 caw = caw.sample(frac=1, random_state=0).reset_index(drop=True)
@@ -47,12 +50,12 @@ test_caw = caw[train_size + val_size:]
 #### PlantCLEF ####
 plantclef_dir = args.plantclef_dir
 
-plantclef_metadata = os.path.join(args.plantclef_dir, 'PlantCLEF2024singleplanttrainingdata.csv')
-# plantclef_metadata = 'PlantCLEF2024singleplanttrainingdata.csv'
+# plantclef_metadata = os.path.join(args.plantclef_dir, 'PlantCLEF2024singleplanttrainingdata.csv')
+plantclef_metadata = 'PlantCLEF2024singleplanttrainingdata.csv'
 plantclef = pd.read_csv(plantclef_metadata, delimiter=";",
                         dtype={'partner': 'string'})
 
-plantclef['class'] = (plantclef['species_id'] == 1363199).astype(int)
+plantclef['class'] = (plantclef['species_id'] == class_id).astype(int)
 plantclef['filename'] = plantclef['species_id'].astype(str) + '/' + plantclef['image_name']
 
 leaf = plantclef[(plantclef['organ'] == 'leaf')][['filename', 'class', 'learn_tag']]
