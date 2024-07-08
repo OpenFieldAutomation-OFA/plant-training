@@ -8,7 +8,7 @@ This script creates binary annotation files for MMPretrain.
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--caw_dir',
-                    default="/mnt/c/caw/classification",
+                    default="/mnt/data/caw/classification",
                     help="Directory of CAW classification data.")
 parser.add_argument('--plantclef_dir',
                     default="/mnt/data/plantclef",
@@ -48,11 +48,11 @@ test_caw = caw[train_size + val_size:]
 plantclef_dir = args.plantclef_dir
 
 plantclef_metadata = os.path.join(args.plantclef_dir, 'PlantCLEF2024singleplanttrainingdata.csv')
-plantclef_metadata = 'PlantCLEF2024singleplanttrainingdata.csv'
+# plantclef_metadata = 'PlantCLEF2024singleplanttrainingdata.csv'
 plantclef = pd.read_csv(plantclef_metadata, delimiter=";",
                         dtype={'partner': 'string'})
 
-plantclef['class'] = (plantclef['species_id'] == 1363500).astype(int)
+plantclef['class'] = (plantclef['species_id'] == 1363199).astype(int)
 plantclef['filename'] = plantclef['species_id'].astype(str) + '/' + plantclef['image_name']
 
 leaf = plantclef[(plantclef['organ'] == 'leaf')][['filename', 'class', 'learn_tag']]
@@ -85,33 +85,33 @@ val_2 = pd.concat([val_caw, val_leaf])
 test_2 = pd.concat([test_caw, test_leaf])
 
 # save annotation files
-train_caw.to_csv(os.path.join(dirname, '../annotation_binary/caw_train.txt'), sep=' ', header=None,
+train_caw.to_csv(os.path.join(dirname, '../annotation_sugarbeet/caw_train.txt'), sep=' ', header=None,
                   index=False)
-val_caw.to_csv(os.path.join(dirname, '../annotation_binary/caw_val.txt'), sep=' ', header=None,
+val_caw.to_csv(os.path.join(dirname, '../annotation_sugarbeet/caw_val.txt'), sep=' ', header=None,
                  index=False)
-test_caw.to_csv(os.path.join(dirname, '../annotation_binary/caw_test.txt'), sep=' ', header=None,
+test_caw.to_csv(os.path.join(dirname, '../annotation_sugarbeet/caw_test.txt'), sep=' ', header=None,
                 index=False)
-train_plantclef.to_csv(os.path.join(dirname, '../annotation_binary/plantclef_train.txt'), sep=' ', header=None,
+train_plantclef.to_csv(os.path.join(dirname, '../annotation_sugarbeet/plantclef_train.txt'), sep=' ', header=None,
                   index=False)
-val_plantclef.to_csv(os.path.join(dirname, '../annotation_binary/plantclef_val.txt'), sep=' ', header=None,
+val_plantclef.to_csv(os.path.join(dirname, '../annotation_sugarbeet/plantclef_val.txt'), sep=' ', header=None,
                  index=False)
-test_plantclef.to_csv(os.path.join(dirname, '../annotation_binary/plantclef_test.txt'), sep=' ', header=None,
+test_plantclef.to_csv(os.path.join(dirname, '../annotation_sugarbeet/plantclef_test.txt'), sep=' ', header=None,
                 index=False)
-train_leaf.to_csv(os.path.join(dirname, '../annotation_binary/leaf_train.txt'), sep=' ', header=None,
+train_leaf.to_csv(os.path.join(dirname, '../annotation_sugarbeet/leaf_train.txt'), sep=' ', header=None,
                   index=False)
-val_leaf.to_csv(os.path.join(dirname, '../annotation_binary/leaf_val.txt'), sep=' ', header=None,
+val_leaf.to_csv(os.path.join(dirname, '../annotation_sugarbeet/leaf_val.txt'), sep=' ', header=None,
                  index=False)
-test_leaf.to_csv(os.path.join(dirname, '../annotation_binary/leaf_test.txt'), sep=' ', header=None,
+test_leaf.to_csv(os.path.join(dirname, '../annotation_sugarbeet/leaf_test.txt'), sep=' ', header=None,
                 index=False)
-train.to_csv(os.path.join(dirname, '../annotation_binary/train.txt'), sep=' ', header=None,
+train.to_csv(os.path.join(dirname, '../annotation_sugarbeet/train.txt'), sep=' ', header=None,
                   index=False)
-val.to_csv(os.path.join(dirname, '../annotation_binary/val.txt'), sep=' ', header=None,
+val.to_csv(os.path.join(dirname, '../annotation_sugarbeet/val.txt'), sep=' ', header=None,
                  index=False)
-test.to_csv(os.path.join(dirname, '../annotation_binary/test.txt'), sep=' ', header=None,
+test.to_csv(os.path.join(dirname, '../annotation_sugarbeet/test.txt'), sep=' ', header=None,
                  index=False)
-train_2.to_csv(os.path.join(dirname, '../annotation_binary/train_2.txt'), sep=' ', header=None,
+train_2.to_csv(os.path.join(dirname, '../annotation_sugarbeet/train_2.txt'), sep=' ', header=None,
                   index=False)
-val_2.to_csv(os.path.join(dirname, '../annotation_binary/val_2.txt'), sep=' ', header=None,
+val_2.to_csv(os.path.join(dirname, '../annotation_sugarbeet/val_2.txt'), sep=' ', header=None,
                  index=False)
-test_2.to_csv(os.path.join(dirname, '../annotation_binary/test_2.txt'), sep=' ', header=None,
+test_2.to_csv(os.path.join(dirname, '../annotation_sugarbeet/test_2.txt'), sep=' ', header=None,
                 index=False)
