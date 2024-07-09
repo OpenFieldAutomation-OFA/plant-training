@@ -7,13 +7,15 @@ import torch
 import torch.nn.functional as F
 from mmengine.evaluator import BaseMetric
 
+from collections import Counter
+
 from mmpretrain.registry import METRICS
 
 @METRICS.register_module()
 class BinaryMetric(BaseMetric):
-    def __init__(self, class_id: int, thrs: float = 0, topk=1) -> None:
+    def __init__(self, class_ids: int, thrs: float = 0, topk=1) -> None:
         super().__init__()
-        self.class_id = class_id
+        self.class_ids = class_ids
         self.thrs = thrs
         self.topk = topk
 
@@ -36,25 +38,26 @@ class BinaryMetric(BaseMetric):
         fp = 0
         fn = 0
         fns = []
-        fps = []
         for result in results:
             pred_scores = result['pred_score']
-            topk_pred_scores, topk_classes = torch.topk(pred_scores, self.topk, dim=0)
+            topk_pred_scores, topk_classes = torch.topk(pred_scores, self.topk)
+            top_class = torch.topk(pred_scores, 1)[1].item()
             predicted = False
-            if self.class_id in topk_classes:
-                if pred_scores[self.class_id] >= self.thrs:
-                    predicted = True
+            for class_id in self.class_ids:
+                if class_id in topk_classes:
+                    if pred_scores[class_id] >= self.thrs:
+                        predicted = True
+                        break
 
-            if predicted and result['gt_label'] == self.class_id:
+            if predicted and result['gt_label'] == self.class_ids[0]:
                 tp += 1
-            if not predicted and result['gt_label'] != self.class_id:
+            if not predicted and result['gt_label'] != self.class_ids[0]:
                 tn += 1
-            if predicted and result['gt_label'] != self.class_id:
+            if predicted and result['gt_label'] != self.class_ids[0]:
                 fp += 1
-                fps.append(result['pred_label'])
-            if not predicted and result['gt_label'] == self.class_id:
+            if not predicted and result['gt_label'] == self.class_ids[0]:
                 fn += 1
-                fns.append(result['pred_label'])
+                fns.append(top_class)
             
         acc = (tp + tn) / (tp + tn + fp + fn)
         if tp + fp == 0:
@@ -72,5 +75,9 @@ class BinaryMetric(BaseMetric):
         else:
             f1 = None
         
+        counter = Counter(fns)
+        count_list = list(counter.items())
+        sorted_count_list = sorted(count_list, key=lambda x: x[1], reverse=True)
+        
         return {'accuracy': acc, 'precision': prec, 'recall': rec, 'f1': f1,
-                'tp': tp, 'tn': tn, 'fp': fp, 'fn': fn, 'fns': fns, 'fps': fps}
+                'tp': tp, 'tn': tn, 'fp': fp, 'fn': fn, 'fns': sorted_count_list}
