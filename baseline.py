@@ -57,7 +57,7 @@ test_pipeline = [
 data_dir = '/mnt/data'
 train_dataloader = dict(
     batch_size=1024,
-    num_workers=20,
+    num_workers=28,
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,
@@ -69,7 +69,7 @@ train_dataloader = dict(
 )
 val_dataloader = dict(
     batch_size=1024,
-    num_workers=20,
+    num_workers=28,
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,
@@ -81,7 +81,7 @@ val_dataloader = dict(
 )
 test_dataloader = dict(
     batch_size=1024,
-    num_workers=20,
+    num_workers=28,
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,

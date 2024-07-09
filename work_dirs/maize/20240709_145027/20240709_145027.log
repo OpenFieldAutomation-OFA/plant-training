@@ -1,0 +1,1131 @@
+2024/07/09 14:50:28 - mmengine - INFO - 
+------------------------------------------------------------
+System environment:
+    sys.platform: linux
+    Python: 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0]
+    CUDA available: True
+    MUSA available: False
+    numpy_random_seed: 0
+    GPU 0,1: NVIDIA A100-SXM4-80GB
+    CUDA_HOME: /usr/local/cuda
+    NVCC: Cuda compilation tools, release 12.3, V12.3.107
+    GCC: x86_64-linux-gnu-gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+    PyTorch: 2.3.1+cu121
+    PyTorch compiling details: PyTorch built with:
+  - GCC 9.3
+  - C++ Version: 201703
+  - Intel(R) oneAPI Math Kernel Library Version 2022.2-Product Build 20220804 for Intel(R) 64 architecture applications
+  - Intel(R) MKL-DNN v3.3.6 (Git Hash 86e6af5974177e513fd3fee58425e1063e7f1361)
+  - OpenMP 201511 (a.k.a. OpenMP 4.5)
+  - LAPACK is enabled (usually provided by MKL)
+  - NNPACK is enabled
+  - CPU capability usage: AVX2
+  - CUDA Runtime 12.1
+  - NVCC architecture flags: -gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_70,code=sm_70;-gencode;arch=compute_75,code=sm_75;-gencode;arch=compute_80,code=sm_80;-gencode;arch=compute_86,code=sm_86;-gencode;arch=compute_90,code=sm_90
+  - CuDNN 8.9.2
+  - Magma 2.6.1
+  - Build settings: BLAS_INFO=mkl, BUILD_TYPE=Release, CUDA_VERSION=12.1, CUDNN_VERSION=8.9.2, CXX_COMPILER=/opt/rh/devtoolset-9/root/usr/bin/c++, CXX_FLAGS= -D_GLIBCXX_USE_CXX11_ABI=0 -fabi-version=11 -fvisibility-inlines-hidden -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO -DLIBKINETO_NOROCTRACER -DUSE_FBGEMM -DUSE_QNNPACK -DUSE_PYTORCH_QNNPACK -DUSE_XNNPACK -DSYMBOLICATE_MOBILE_DEBUG_HANDLE -O2 -fPIC -Wall -Wextra -Werror=return-type -Werror=non-virtual-dtor -Werror=bool-operation -Wnarrowing -Wno-missing-field-initializers -Wno-type-limits -Wno-array-bounds -Wno-unknown-pragmas -Wno-unused-parameter -Wno-unused-function -Wno-unused-result -Wno-strict-overflow -Wno-strict-aliasing -Wno-stringop-overflow -Wsuggest-override -Wno-psabi -Wno-error=pedantic -Wno-error=old-style-cast -Wno-missing-braces -fdiagnostics-color=always -faligned-new -Wno-unused-but-set-variable -Wno-maybe-uninitialized -fno-math-errno -fno-trapping-math -Werror=format -Wno-stringop-overflow, LAPACK_INFO=mkl, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, PERF_WITH_AVX512=1, TORCH_VERSION=2.3.1, USE_CUDA=ON, USE_CUDNN=ON, USE_CUSPARSELT=1, USE_EXCEPTION_PTR=1, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_GLOO=ON, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=1, USE_NNPACK=ON, USE_OPENMP=ON, USE_ROCM=OFF, USE_ROCM_KERNEL_ASSERT=OFF, 
+
+    TorchVision: 0.18.1+cu121
+    OpenCV: 4.10.0
+    MMEngine: 0.10.4
+
+Runtime environment:
+    cudnn_benchmark: False
+    mp_cfg: {'mp_start_method': 'fork', 'opencv_num_threads': 0}
+    dist_cfg: {'backend': 'nccl'}
+    seed: 0
+    deterministic: True
+    Distributed launcher: pytorch
+    Distributed training: True
+    GPU number: 2
+------------------------------------------------------------
+
+2024/07/09 14:50:28 - mmengine - INFO - Config:
+auto_scale_lr = dict(base_batch_size=1024)
+data_dir = '/mnt/data'
+data_preprocessor = dict(
+    mean=[
+        123.675,
+        116.28,
+        103.53,
+    ],
+    num_classes=2,
+    std=[
+        58.395,
+        57.12,
+        57.375,
+    ],
+    to_rgb=True)
+default_hooks = dict(
+    checkpoint=dict(interval=1, max_keep_ckpts=5, type='CheckpointHook'),
+    logger=dict(interval=25, type='LoggerHook'),
+    param_scheduler=dict(type='ParamSchedulerHook'),
+    sampler_seed=dict(type='DistSamplerSeedHook'),
+    timer=dict(type='IterTimerHook'),
+    visualization=dict(enable=False, type='VisualizationHook'))
+default_scope = 'mmpretrain'
+env_cfg = dict(
+    cudnn_benchmark=False,
+    dist_cfg=dict(backend='nccl'),
+    mp_cfg=dict(mp_start_method='fork', opencv_num_threads=0))
+launcher = 'pytorch'
+load_from = None
+log_level = 'INFO'
+model = dict(
+    backbone=dict(
+        arch='base',
+        frozen_stages=12,
+        img_size=518,
+        init_cfg=dict(
+            checkpoint=
+            'https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth',
+            prefix='backbone',
+            type='Pretrained'),
+        layer_scale_init_value=1e-05,
+        patch_size=14,
+        type='VisionTransformer'),
+    head=dict(
+        in_channels=768,
+        loss=dict(type='CrossEntropyLoss'),
+        num_classes=2,
+        topk=(1, ),
+        type='VisionTransformerClsHead'),
+    neck=None,
+    type='ImageClassifier')
+optim_wrapper = dict(
+    loss_scale='dynamic',
+    optimizer=dict(lr=0.0001, type='AdamW', weight_decay=0.05),
+    paramwise_cfg=dict(
+        custom_keys=dict(
+            cls_token=dict(decay_mult=0.0), mask_token=dict(decay_mult=0.0))),
+    type='AmpOptimWrapper')
+param_scheduler = [
+    dict(T_max=20, by_epoch=True, type='CosineAnnealingLR'),
+]
+randomness = dict(deterministic=True, seed=0)
+resume = False
+test_cfg = dict()
+test_dataloader = dict(
+    batch_size=1024,
+    collate_fn=dict(type='default_collate'),
+    dataset=dict(
+        ann_file='annotation_maize/test_2.txt',
+        data_prefix='/mnt/data',
+        pipeline=[
+            dict(type='LoadImageFromFile'),
+            dict(
+                backend='pillow',
+                edge='short',
+                interpolation='bicubic',
+                scale=518,
+                type='ResizeEdge'),
+            dict(crop_size=518, type='CenterCrop'),
+            dict(type='PackInputs'),
+        ],
+        type='CustomDataset'),
+    num_workers=28,
+    persistent_workers=True,
+    pin_memory=True,
+    sampler=dict(shuffle=True, type='DefaultSampler'))
+test_evaluator = [
+    dict(topk=(1, ), type='Accuracy'),
+    dict(average=None, type='SingleLabelMetric'),
+]
+test_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(
+        backend='pillow',
+        edge='short',
+        interpolation='bicubic',
+        scale=518,
+        type='ResizeEdge'),
+    dict(crop_size=518, type='CenterCrop'),
+    dict(type='PackInputs'),
+]
+train_cfg = dict(by_epoch=True, max_epochs=12, val_interval=1)
+train_dataloader = dict(
+    batch_size=1024,
+    collate_fn=dict(type='default_collate'),
+    dataset=dict(
+        ann_file='annotation_maize/train_2.txt',
+        data_prefix='/mnt/data',
+        pipeline=[
+            dict(type='LoadImageFromFile'),
+            dict(
+                backend='pillow',
+                edge='short',
+                interpolation='bicubic',
+                scale=518,
+                type='ResizeEdge'),
+            dict(crop_size=518, type='CenterCrop'),
+            dict(type='PackInputs'),
+        ],
+        type='CustomDataset'),
+    num_workers=28,
+    persistent_workers=True,
+    pin_memory=True,
+    sampler=dict(shuffle=True, type='DefaultSampler'))
+train_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(
+        backend='pillow',
+        interpolation='bicubic',
+        scale=518,
+        type='RandomResizedCrop'),
+    dict(direction='horizontal', prob=0.5, type='RandomFlip'),
+    dict(type='PackInputs'),
+]
+val_cfg = dict()
+val_dataloader = dict(
+    batch_size=1024,
+    collate_fn=dict(type='default_collate'),
+    dataset=dict(
+        ann_file='annotation_maize/val_2.txt',
+        data_prefix='/mnt/data',
+        pipeline=[
+            dict(type='LoadImageFromFile'),
+            dict(
+                backend='pillow',
+                edge='short',
+                interpolation='bicubic',
+                scale=518,
+                type='ResizeEdge'),
+            dict(crop_size=518, type='CenterCrop'),
+            dict(type='PackInputs'),
+        ],
+        type='CustomDataset'),
+    num_workers=28,
+    persistent_workers=True,
+    pin_memory=True,
+    sampler=dict(shuffle=True, type='DefaultSampler'))
+val_evaluator = [
+    dict(topk=(1, ), type='Accuracy'),
+    dict(average=None, type='SingleLabelMetric'),
+]
+vis_backends = [
+    dict(type='LocalVisBackend'),
+]
+visualizer = dict(
+    type='UniversalVisualizer', vis_backends=[
+        dict(type='LocalVisBackend'),
+    ])
+work_dir = './work_dirs/maize'
+
+2024/07/09 14:50:29 - mmengine - INFO - Hooks will be executed in the following order:
+before_run:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+before_train:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+before_train_epoch:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(NORMAL      ) DistSamplerSeedHook                
+ -------------------- 
+before_train_iter:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+after_train_iter:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(BELOW_NORMAL) LoggerHook                         
+(LOW         ) ParamSchedulerHook                 
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+after_train_epoch:
+(NORMAL      ) IterTimerHook                      
+(LOW         ) ParamSchedulerHook                 
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+before_val:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+before_val_epoch:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+before_val_iter:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+after_val_iter:
+(NORMAL      ) IterTimerHook                      
+(NORMAL      ) VisualizationHook                  
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+after_val_epoch:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(BELOW_NORMAL) LoggerHook                         
+(LOW         ) ParamSchedulerHook                 
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+after_val:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+after_train:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(VERY_LOW    ) CheckpointHook                     
+ -------------------- 
+before_test:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+before_test_epoch:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+before_test_iter:
+(NORMAL      ) IterTimerHook                      
+ -------------------- 
+after_test_iter:
+(NORMAL      ) IterTimerHook                      
+(NORMAL      ) VisualizationHook                  
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+after_test_epoch:
+(VERY_HIGH   ) RuntimeInfoHook                    
+(NORMAL      ) IterTimerHook                      
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+after_test:
+(VERY_HIGH   ) RuntimeInfoHook                    
+ -------------------- 
+after_run:
+(BELOW_NORMAL) LoggerHook                         
+ -------------------- 
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.cls_token is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.pos_embed is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.patch_embed.projection.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.patch_embed.projection.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.0.ln1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.0.ln1.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.0.attn.qkv.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.0.attn.qkv.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.0.attn.proj.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.0.attn.proj.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.0.attn.gamma1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.0.ln2.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.0.ln2.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.0.ffn.layers.0.0.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.0.ffn.layers.0.0.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.0.ffn.layers.1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.0.ffn.layers.1.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.0.ffn.gamma2.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.1.ln1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.1.ln1.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.1.attn.qkv.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.1.attn.qkv.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.1.attn.proj.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.1.attn.proj.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.1.attn.gamma1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.1.ln2.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.1.ln2.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.1.ffn.layers.0.0.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.1.ffn.layers.0.0.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.1.ffn.layers.1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.1.ffn.layers.1.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.1.ffn.gamma2.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.2.ln1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.2.ln1.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.2.attn.qkv.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.2.attn.qkv.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.2.attn.proj.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.2.attn.proj.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.2.attn.gamma1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.2.ln2.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.2.ln2.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.2.ffn.layers.0.0.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.2.ffn.layers.0.0.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.2.ffn.layers.1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.2.ffn.layers.1.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.2.ffn.gamma2.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.3.ln1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.3.ln1.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.3.attn.qkv.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.3.attn.qkv.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.3.attn.proj.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.3.attn.proj.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.3.attn.gamma1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.3.ln2.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.3.ln2.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.3.ffn.layers.0.0.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.3.ffn.layers.0.0.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.3.ffn.layers.1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.3.ffn.layers.1.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.3.ffn.gamma2.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.4.ln1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.4.ln1.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.4.attn.qkv.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.4.attn.qkv.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.4.attn.proj.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.4.attn.proj.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.4.attn.gamma1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.4.ln2.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.4.ln2.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.4.ffn.layers.0.0.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.4.ffn.layers.0.0.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.4.ffn.layers.1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.4.ffn.layers.1.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.4.ffn.gamma2.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.5.ln1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.5.ln1.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.5.attn.qkv.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.5.attn.qkv.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.5.attn.proj.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.5.attn.proj.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.5.attn.gamma1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.5.ln2.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.5.ln2.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.5.ffn.layers.0.0.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.5.ffn.layers.0.0.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.5.ffn.layers.1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.5.ffn.layers.1.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.5.ffn.gamma2.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.6.ln1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.6.ln1.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.6.attn.qkv.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.6.attn.qkv.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.6.attn.proj.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.6.attn.proj.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.6.attn.gamma1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.6.ln2.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.6.ln2.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.6.ffn.layers.0.0.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.6.ffn.layers.0.0.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.6.ffn.layers.1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.6.ffn.layers.1.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.6.ffn.gamma2.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.7.ln1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.7.ln1.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.7.attn.qkv.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.7.attn.qkv.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.7.attn.proj.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.7.attn.proj.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.7.attn.gamma1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.7.ln2.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.7.ln2.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.7.ffn.layers.0.0.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.7.ffn.layers.0.0.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.7.ffn.layers.1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.7.ffn.layers.1.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.7.ffn.gamma2.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.8.ln1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.8.ln1.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.8.attn.qkv.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.8.attn.qkv.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.8.attn.proj.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.8.attn.proj.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.8.attn.gamma1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.8.ln2.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.8.ln2.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.8.ffn.layers.0.0.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.8.ffn.layers.0.0.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.8.ffn.layers.1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.8.ffn.layers.1.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.8.ffn.gamma2.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.9.ln1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.9.ln1.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.9.attn.qkv.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.9.attn.qkv.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.9.attn.proj.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.9.attn.proj.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.9.attn.gamma1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.9.ln2.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.9.ln2.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.9.ffn.layers.0.0.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.9.ffn.layers.0.0.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.9.ffn.layers.1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.9.ffn.layers.1.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.9.ffn.gamma2.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.10.ln1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.10.ln1.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.10.attn.qkv.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.10.attn.qkv.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.10.attn.proj.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.10.attn.proj.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.10.attn.gamma1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.10.ln2.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.10.ln2.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.10.ffn.layers.0.0.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.10.ffn.layers.0.0.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.10.ffn.layers.1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.10.ffn.layers.1.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.10.ffn.gamma2.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.11.ln1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.11.ln1.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.11.attn.qkv.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.11.attn.qkv.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.11.attn.proj.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.11.attn.proj.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.11.attn.gamma1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.11.ln2.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.11.ln2.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.11.ffn.layers.0.0.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.11.ffn.layers.0.0.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.11.ffn.layers.1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.11.ffn.layers.1.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.layers.11.ffn.gamma2.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.ln1.weight is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - WARNING - backbone.ln1.bias is skipped since its requires_grad=False
+2024/07/09 14:50:32 - mmengine - INFO - load backbone in model from: https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth
+2024/07/09 14:50:33 - mmengine - WARNING - The model and loaded state dict do not match exactly
+
+unexpected key in source state_dict: mask_token
+
+Name of parameter - Initialization information
+
+backbone.cls_token - torch.Size([1, 1, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.pos_embed - torch.Size([1, 1370, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.patch_embed.projection.weight - torch.Size([768, 3, 14, 14]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.patch_embed.projection.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.0.ln1.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.0.ln1.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.0.attn.qkv.weight - torch.Size([2304, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.0.attn.qkv.bias - torch.Size([2304]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.0.attn.proj.weight - torch.Size([768, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.0.attn.proj.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.0.attn.gamma1.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.0.ln2.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.0.ln2.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.0.ffn.layers.0.0.weight - torch.Size([3072, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.0.ffn.layers.0.0.bias - torch.Size([3072]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.0.ffn.layers.1.weight - torch.Size([768, 3072]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.0.ffn.layers.1.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.0.ffn.gamma2.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.1.ln1.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.1.ln1.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.1.attn.qkv.weight - torch.Size([2304, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.1.attn.qkv.bias - torch.Size([2304]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.1.attn.proj.weight - torch.Size([768, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.1.attn.proj.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.1.attn.gamma1.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.1.ln2.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.1.ln2.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.1.ffn.layers.0.0.weight - torch.Size([3072, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.1.ffn.layers.0.0.bias - torch.Size([3072]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.1.ffn.layers.1.weight - torch.Size([768, 3072]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.1.ffn.layers.1.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.1.ffn.gamma2.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.2.ln1.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.2.ln1.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.2.attn.qkv.weight - torch.Size([2304, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.2.attn.qkv.bias - torch.Size([2304]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.2.attn.proj.weight - torch.Size([768, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.2.attn.proj.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.2.attn.gamma1.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.2.ln2.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.2.ln2.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.2.ffn.layers.0.0.weight - torch.Size([3072, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.2.ffn.layers.0.0.bias - torch.Size([3072]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.2.ffn.layers.1.weight - torch.Size([768, 3072]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.2.ffn.layers.1.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.2.ffn.gamma2.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.3.ln1.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.3.ln1.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.3.attn.qkv.weight - torch.Size([2304, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.3.attn.qkv.bias - torch.Size([2304]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.3.attn.proj.weight - torch.Size([768, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.3.attn.proj.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.3.attn.gamma1.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.3.ln2.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.3.ln2.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.3.ffn.layers.0.0.weight - torch.Size([3072, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.3.ffn.layers.0.0.bias - torch.Size([3072]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.3.ffn.layers.1.weight - torch.Size([768, 3072]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.3.ffn.layers.1.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.3.ffn.gamma2.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.4.ln1.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.4.ln1.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.4.attn.qkv.weight - torch.Size([2304, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.4.attn.qkv.bias - torch.Size([2304]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.4.attn.proj.weight - torch.Size([768, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.4.attn.proj.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.4.attn.gamma1.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.4.ln2.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.4.ln2.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.4.ffn.layers.0.0.weight - torch.Size([3072, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.4.ffn.layers.0.0.bias - torch.Size([3072]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.4.ffn.layers.1.weight - torch.Size([768, 3072]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.4.ffn.layers.1.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.4.ffn.gamma2.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.5.ln1.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.5.ln1.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.5.attn.qkv.weight - torch.Size([2304, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.5.attn.qkv.bias - torch.Size([2304]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.5.attn.proj.weight - torch.Size([768, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.5.attn.proj.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.5.attn.gamma1.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.5.ln2.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.5.ln2.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.5.ffn.layers.0.0.weight - torch.Size([3072, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.5.ffn.layers.0.0.bias - torch.Size([3072]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.5.ffn.layers.1.weight - torch.Size([768, 3072]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.5.ffn.layers.1.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.5.ffn.gamma2.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.6.ln1.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.6.ln1.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.6.attn.qkv.weight - torch.Size([2304, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.6.attn.qkv.bias - torch.Size([2304]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.6.attn.proj.weight - torch.Size([768, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.6.attn.proj.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.6.attn.gamma1.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.6.ln2.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.6.ln2.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.6.ffn.layers.0.0.weight - torch.Size([3072, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.6.ffn.layers.0.0.bias - torch.Size([3072]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.6.ffn.layers.1.weight - torch.Size([768, 3072]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.6.ffn.layers.1.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.6.ffn.gamma2.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.7.ln1.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.7.ln1.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.7.attn.qkv.weight - torch.Size([2304, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.7.attn.qkv.bias - torch.Size([2304]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.7.attn.proj.weight - torch.Size([768, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.7.attn.proj.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.7.attn.gamma1.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.7.ln2.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.7.ln2.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.7.ffn.layers.0.0.weight - torch.Size([3072, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.7.ffn.layers.0.0.bias - torch.Size([3072]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.7.ffn.layers.1.weight - torch.Size([768, 3072]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.7.ffn.layers.1.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.7.ffn.gamma2.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.8.ln1.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.8.ln1.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.8.attn.qkv.weight - torch.Size([2304, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.8.attn.qkv.bias - torch.Size([2304]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.8.attn.proj.weight - torch.Size([768, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.8.attn.proj.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.8.attn.gamma1.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.8.ln2.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.8.ln2.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.8.ffn.layers.0.0.weight - torch.Size([3072, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.8.ffn.layers.0.0.bias - torch.Size([3072]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.8.ffn.layers.1.weight - torch.Size([768, 3072]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.8.ffn.layers.1.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.8.ffn.gamma2.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.9.ln1.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.9.ln1.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.9.attn.qkv.weight - torch.Size([2304, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.9.attn.qkv.bias - torch.Size([2304]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.9.attn.proj.weight - torch.Size([768, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.9.attn.proj.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.9.attn.gamma1.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.9.ln2.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.9.ln2.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.9.ffn.layers.0.0.weight - torch.Size([3072, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.9.ffn.layers.0.0.bias - torch.Size([3072]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.9.ffn.layers.1.weight - torch.Size([768, 3072]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.9.ffn.layers.1.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.9.ffn.gamma2.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.10.ln1.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.10.ln1.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.10.attn.qkv.weight - torch.Size([2304, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.10.attn.qkv.bias - torch.Size([2304]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.10.attn.proj.weight - torch.Size([768, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.10.attn.proj.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.10.attn.gamma1.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.10.ln2.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.10.ln2.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.10.ffn.layers.0.0.weight - torch.Size([3072, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.10.ffn.layers.0.0.bias - torch.Size([3072]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.10.ffn.layers.1.weight - torch.Size([768, 3072]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.10.ffn.layers.1.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.10.ffn.gamma2.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.11.ln1.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.11.ln1.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.11.attn.qkv.weight - torch.Size([2304, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.11.attn.qkv.bias - torch.Size([2304]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.11.attn.proj.weight - torch.Size([768, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.11.attn.proj.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.11.attn.gamma1.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.11.ln2.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.11.ln2.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.11.ffn.layers.0.0.weight - torch.Size([3072, 768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.11.ffn.layers.0.0.bias - torch.Size([3072]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.11.ffn.layers.1.weight - torch.Size([768, 3072]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.11.ffn.layers.1.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.layers.11.ffn.gamma2.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.ln1.weight - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+backbone.ln1.bias - torch.Size([768]): 
+PretrainedInit: load from https://download.openmmlab.com/mmpretrain/v1.0/dinov2/vit-base-p14_dinov2-pre_3rdparty_20230426-ba246503.pth 
+
+head.layers.head.weight - torch.Size([2, 768]): 
+ConstantInit: val=0, bias=0 
+
+head.layers.head.bias - torch.Size([2]): 
+ConstantInit: val=0, bias=0 
+2024/07/09 14:50:33 - mmengine - WARNING - "FileClient" will be deprecated in future. Please use io functions in https://mmengine.readthedocs.io/en/latest/api/fileio.html#file-io
+2024/07/09 14:50:33 - mmengine - WARNING - "HardDiskBackend" is the alias of "LocalBackend" and the former will be deprecated in future.
+2024/07/09 14:50:33 - mmengine - INFO - Checkpoints will be saved to /root/weed-detection/work_dirs/maize.
+2024/07/09 14:52:50 - mmengine - INFO - Epoch(train)  [1][ 25/185]  base_lr: 1.0000e-04 lr: 1.0000e-04  eta: 3:21:13  time: 2.5485  data_time: 0.0026  memory: 32309  loss: 0.3670
+2024/07/09 14:53:55 - mmengine - INFO - Epoch(train)  [1][ 50/185]  base_lr: 1.0000e-04 lr: 1.0000e-04  eta: 2:25:58  time: 2.5507  data_time: 0.0021  memory: 32309  loss: 0.2032
+2024/07/09 14:54:59 - mmengine - INFO - Epoch(train)  [1][ 75/185]  base_lr: 1.0000e-04 lr: 1.0000e-04  eta: 2:06:44  time: 2.5531  data_time: 0.0023  memory: 32309  loss: 0.1440
+2024/07/09 14:56:03 - mmengine - INFO - Epoch(train)  [1][100/185]  base_lr: 1.0000e-04 lr: 1.0000e-04  eta: 1:56:35  time: 2.5505  data_time: 0.0025  memory: 32309  loss: 0.1141
+2024/07/09 14:57:07 - mmengine - INFO - Epoch(train)  [1][125/185]  base_lr: 1.0000e-04 lr: 1.0000e-04  eta: 1:50:06  time: 2.5536  data_time: 0.0025  memory: 32309  loss: 0.0984
+2024/07/09 14:58:11 - mmengine - INFO - Epoch(train)  [1][150/185]  base_lr: 1.0000e-04 lr: 1.0000e-04  eta: 1:45:27  time: 2.5509  data_time: 0.0020  memory: 32309  loss: 0.0830
+2024/07/09 14:59:15 - mmengine - INFO - Epoch(train)  [1][175/185]  base_lr: 1.0000e-04 lr: 1.0000e-04  eta: 1:41:43  time: 2.5480  data_time: 0.0022  memory: 32309  loss: 0.0725
+2024/07/09 14:59:39 - mmengine - INFO - Exp name: maize_20240709_145027
+2024/07/09 14:59:39 - mmengine - INFO - Saving checkpoint at 1 epochs
+2024/07/09 15:02:43 - mmengine - INFO - Epoch(val) [1][10/10]    accuracy/top1: 95.6335  single-label/precision_classwise: [95.66204071044922, 90.74073791503906]  single-label/recall_classwise: [99.94355773925781, 10.876803398132324]  single-label/f1-score_classwise: [97.75594329833984, 19.425174713134766]  data_time: 1.3186  time: 17.4635
+2024/07/09 15:04:32 - mmengine - INFO - Epoch(train)  [2][ 25/185]  base_lr: 9.9384e-05 lr: 9.9384e-05  eta: 1:44:32  time: 2.5539  data_time: 0.0028  memory: 48749  loss: 0.0625
+2024/07/09 15:05:36 - mmengine - INFO - Epoch(train)  [2][ 50/185]  base_lr: 9.9384e-05 lr: 9.9384e-05  eta: 1:41:19  time: 2.5510  data_time: 0.0044  memory: 32309  loss: 0.0598
+2024/07/09 15:06:40 - mmengine - INFO - Epoch(train)  [2][ 75/185]  base_lr: 9.9384e-05 lr: 9.9384e-05  eta: 1:38:28  time: 2.5521  data_time: 0.0025  memory: 32309  loss: 0.0530
+2024/07/09 15:07:44 - mmengine - INFO - Epoch(train)  [2][100/185]  base_lr: 9.9384e-05 lr: 9.9384e-05  eta: 1:35:55  time: 2.5540  data_time: 0.0028  memory: 32309  loss: 0.0481
+2024/07/09 15:08:48 - mmengine - INFO - Epoch(train)  [2][125/185]  base_lr: 9.9384e-05 lr: 9.9384e-05  eta: 1:33:37  time: 2.5709  data_time: 0.0029  memory: 32309  loss: 0.0440
+2024/07/09 15:09:52 - mmengine - INFO - Epoch(train)  [2][150/185]  base_lr: 9.9384e-05 lr: 9.9384e-05  eta: 1:31:31  time: 2.5607  data_time: 0.0020  memory: 32309  loss: 0.0432
+2024/07/09 15:10:57 - mmengine - INFO - Epoch(train)  [2][175/185]  base_lr: 9.9384e-05 lr: 9.9384e-05  eta: 1:29:34  time: 2.5633  data_time: 0.0019  memory: 32309  loss: 0.0396
+2024/07/09 15:11:21 - mmengine - INFO - Exp name: maize_20240709_145027
+2024/07/09 15:11:21 - mmengine - INFO - Saving checkpoint at 2 epochs
+2024/07/09 15:14:44 - mmengine - INFO - Epoch(val) [2][10/10]    accuracy/top1: 97.2716  single-label/precision_classwise: [97.3426513671875, 94.35665893554688]  single-label/recall_classwise: [99.85889434814453, 46.39289855957031]  single-label/f1-score_classwise: [98.58472442626953, 62.20238494873047]  data_time: 3.1760  time: 17.8220
+2024/07/09 15:16:33 - mmengine - INFO - Epoch(train)  [3][ 25/185]  base_lr: 9.7553e-05 lr: 9.7553e-05  eta: 1:30:18  time: 2.6037  data_time: 0.0054  memory: 48749  loss: 0.0373
+2024/07/09 15:17:37 - mmengine - INFO - Epoch(train)  [3][ 50/185]  base_lr: 9.7553e-05 lr: 9.7553e-05  eta: 1:28:22  time: 2.5849  data_time: 0.0030  memory: 32309  loss: 0.0366
+2024/07/09 15:18:41 - mmengine - INFO - Epoch(train)  [3][ 75/185]  base_lr: 9.7553e-05 lr: 9.7553e-05  eta: 1:26:32  time: 2.5836  data_time: 0.0035  memory: 32309  loss: 0.0351
+2024/07/09 15:19:46 - mmengine - INFO - Epoch(train)  [3][100/185]  base_lr: 9.7553e-05 lr: 9.7553e-05  eta: 1:24:48  time: 2.6043  data_time: 0.0048  memory: 32309  loss: 0.0342
+2024/07/09 15:20:51 - mmengine - INFO - Epoch(train)  [3][125/185]  base_lr: 9.7553e-05 lr: 9.7553e-05  eta: 1:23:08  time: 2.6328  data_time: 0.0051  memory: 32309  loss: 0.0307
+2024/07/09 15:21:56 - mmengine - INFO - Epoch(train)  [3][150/185]  base_lr: 9.7553e-05 lr: 9.7553e-05  eta: 1:21:31  time: 2.5859  data_time: 0.0023  memory: 32309  loss: 0.0327
+2024/07/09 15:23:00 - mmengine - INFO - Epoch(train)  [3][175/185]  base_lr: 9.7553e-05 lr: 9.7553e-05  eta: 1:19:55  time: 2.5627  data_time: 0.0020  memory: 32309  loss: 0.0305
+2024/07/09 15:23:24 - mmengine - INFO - Exp name: maize_20240709_145027
+2024/07/09 15:23:24 - mmengine - INFO - Saving checkpoint at 3 epochs
+2024/07/09 15:26:53 - mmengine - INFO - Epoch(val) [3][10/10]    accuracy/top1: 98.0182  single-label/precision_classwise: [98.1675796508789, 93.60655212402344]  single-label/recall_classwise: [99.7798843383789, 63.37403106689453]  single-label/f1-score_classwise: [98.9671630859375, 75.57908630371094]  data_time: 3.7268  time: 18.3478
+2024/07/09 15:28:40 - mmengine - INFO - Epoch(train)  [4][ 25/185]  base_lr: 9.4550e-05 lr: 9.4550e-05  eta: 1:19:42  time: 2.5619  data_time: 0.0045  memory: 48749  loss: 0.0301
+2024/07/09 15:29:44 - mmengine - INFO - Epoch(train)  [4][ 50/185]  base_lr: 9.4550e-05 lr: 9.4550e-05  eta: 1:18:05  time: 2.5673  data_time: 0.0064  memory: 32309  loss: 0.0283
+2024/07/09 15:30:48 - mmengine - INFO - Epoch(train)  [4][ 75/185]  base_lr: 9.4550e-05 lr: 9.4550e-05  eta: 1:16:32  time: 2.5860  data_time: 0.0031  memory: 32309  loss: 0.0252
+2024/07/09 15:31:53 - mmengine - INFO - Epoch(train)  [4][100/185]  base_lr: 9.4550e-05 lr: 9.4550e-05  eta: 1:15:00  time: 2.5664  data_time: 0.0032  memory: 32309  loss: 0.0228
+2024/07/09 15:32:57 - mmengine - INFO - Epoch(train)  [4][125/185]  base_lr: 9.4550e-05 lr: 9.4550e-05  eta: 1:13:31  time: 2.5857  data_time: 0.0035  memory: 32309  loss: 0.0262
+2024/07/09 15:34:01 - mmengine - INFO - Epoch(train)  [4][150/185]  base_lr: 9.4550e-05 lr: 9.4550e-05  eta: 1:12:03  time: 2.5503  data_time: 0.0022  memory: 32309  loss: 0.0248
+2024/07/09 15:35:04 - mmengine - INFO - Epoch(train)  [4][175/185]  base_lr: 9.4550e-05 lr: 9.4550e-05  eta: 1:10:36  time: 2.5478  data_time: 0.0017  memory: 32309  loss: 0.0230
+2024/07/09 15:35:29 - mmengine - INFO - Exp name: maize_20240709_145027
+2024/07/09 15:35:29 - mmengine - INFO - Saving checkpoint at 4 epochs
+2024/07/09 15:38:29 - mmengine - INFO - Epoch(val) [4][10/10]    accuracy/top1: 98.2706  single-label/precision_classwise: [98.42984771728516, 93.9301986694336]  single-label/recall_classwise: [99.77423858642578, 68.7014389038086]  single-label/f1-score_classwise: [99.09748077392578, 79.35897064208984]  data_time: 1.0737  time: 15.7186
+2024/07/09 15:40:14 - mmengine - INFO - Epoch(train)  [5][ 25/185]  base_lr: 9.0451e-05 lr: 9.0451e-05  eta: 1:09:53  time: 2.5970  data_time: 0.0030  memory: 48749  loss: 0.0213
+2024/07/09 15:41:18 - mmengine - INFO - Epoch(train)  [5][ 50/185]  base_lr: 9.0451e-05 lr: 9.0451e-05  eta: 1:08:26  time: 2.5693  data_time: 0.0031  memory: 32309  loss: 0.0221
+2024/07/09 15:42:22 - mmengine - INFO - Epoch(train)  [5][ 75/185]  base_lr: 9.0451e-05 lr: 9.0451e-05  eta: 1:07:01  time: 2.5662  data_time: 0.0030  memory: 32309  loss: 0.0216
+2024/07/09 15:43:26 - mmengine - INFO - Epoch(train)  [5][100/185]  base_lr: 9.0451e-05 lr: 9.0451e-05  eta: 1:05:37  time: 2.5667  data_time: 0.0033  memory: 32309  loss: 0.0214
+2024/07/09 15:44:31 - mmengine - INFO - Epoch(train)  [5][125/185]  base_lr: 9.0451e-05 lr: 9.0451e-05  eta: 1:04:15  time: 2.5666  data_time: 0.0038  memory: 32309  loss: 0.0204
+2024/07/09 15:45:35 - mmengine - INFO - Epoch(train)  [5][150/185]  base_lr: 9.0451e-05 lr: 9.0451e-05  eta: 1:02:53  time: 2.5525  data_time: 0.0021  memory: 32309  loss: 0.0192
+2024/07/09 15:46:39 - mmengine - INFO - Epoch(train)  [5][175/185]  base_lr: 9.0451e-05 lr: 9.0451e-05  eta: 1:01:32  time: 2.5519  data_time: 0.0021  memory: 32309  loss: 0.0217
+2024/07/09 15:47:03 - mmengine - INFO - Exp name: maize_20240709_145027
+2024/07/09 15:47:03 - mmengine - INFO - Saving checkpoint at 5 epochs
+2024/07/09 15:50:36 - mmengine - INFO - Epoch(val) [5][10/10]    accuracy/top1: 98.3995  single-label/precision_classwise: [98.55613708496094, 94.27312469482422]  single-label/recall_classwise: [99.7798843383789, 71.25416564941406]  single-label/f1-score_classwise: [99.16423034667969, 81.16309356689453]  data_time: 4.0137  time: 18.6415
+2024/07/09 15:52:20 - mmengine - INFO - Epoch(train)  [6][ 25/185]  base_lr: 8.5355e-05 lr: 8.5355e-05  eta: 1:00:31  time: 2.6221  data_time: 0.0072  memory: 48749  loss: 0.0200
+2024/07/09 15:53:24 - mmengine - INFO - Epoch(train)  [6][ 50/185]  base_lr: 8.5355e-05 lr: 8.5355e-05  eta: 0:59:10  time: 2.5625  data_time: 0.0030  memory: 32309  loss: 0.0167
+2024/07/09 15:54:28 - mmengine - INFO - Exp name: maize_20240709_145027
+2024/07/09 15:54:28 - mmengine - INFO - Epoch(train)  [6][ 75/185]  base_lr: 8.5355e-05 lr: 8.5355e-05  eta: 0:57:50  time: 2.5719  data_time: 0.0026  memory: 32309  loss: 0.0181
+2024/07/09 15:55:32 - mmengine - INFO - Epoch(train)  [6][100/185]  base_lr: 8.5355e-05 lr: 8.5355e-05  eta: 0:56:31  time: 2.5930  data_time: 0.0042  memory: 32309  loss: 0.0179
+2024/07/09 15:56:36 - mmengine - INFO - Epoch(train)  [6][125/185]  base_lr: 8.5355e-05 lr: 8.5355e-05  eta: 0:55:13  time: 2.5609  data_time: 0.0028  memory: 32309  loss: 0.0208
+2024/07/09 15:57:40 - mmengine - INFO - Epoch(train)  [6][150/185]  base_lr: 8.5355e-05 lr: 8.5355e-05  eta: 0:53:55  time: 2.5525  data_time: 0.0021  memory: 32309  loss: 0.0174
+2024/07/09 15:58:44 - mmengine - INFO - Epoch(train)  [6][175/185]  base_lr: 8.5355e-05 lr: 8.5355e-05  eta: 0:52:37  time: 2.5511  data_time: 0.0022  memory: 32309  loss: 0.0184
+2024/07/09 15:59:09 - mmengine - INFO - Exp name: maize_20240709_145027
+2024/07/09 15:59:09 - mmengine - INFO - Saving checkpoint at 6 epochs
+2024/07/09 16:02:30 - mmengine - INFO - Epoch(val) [6][10/10]    accuracy/top1: 98.5391  single-label/precision_classwise: [98.71551513671875, 94.1093978881836]  single-label/recall_classwise: [99.76295471191406, 74.47280883789062]  single-label/f1-score_classwise: [99.2364730834961, 83.1474609375]  data_time: 3.0192  time: 17.6322
+2024/07/09 16:04:23 - mmengine - INFO - Epoch(train)  [7][ 25/185]  base_lr: 7.9389e-05 lr: 7.9389e-05  eta: 0:51:36  time: 2.5875  data_time: 0.0040  memory: 48749  loss: 0.0192
+2024/07/09 16:05:27 - mmengine - INFO - Epoch(train)  [7][ 50/185]  base_lr: 7.9389e-05 lr: 7.9389e-05  eta: 0:50:18  time: 2.5587  data_time: 0.0026  memory: 32309  loss: 0.0165
+2024/07/09 16:06:32 - mmengine - INFO - Epoch(train)  [7][ 75/185]  base_lr: 7.9389e-05 lr: 7.9389e-05  eta: 0:49:01  time: 2.5675  data_time: 0.0043  memory: 32309  loss: 0.0170
+2024/07/09 16:07:36 - mmengine - INFO - Epoch(train)  [7][100/185]  base_lr: 7.9389e-05 lr: 7.9389e-05  eta: 0:47:44  time: 2.5616  data_time: 0.0032  memory: 32309  loss: 0.0156
+2024/07/09 16:08:40 - mmengine - INFO - Epoch(train)  [7][125/185]  base_lr: 7.9389e-05 lr: 7.9389e-05  eta: 0:46:28  time: 2.5621  data_time: 0.0031  memory: 32309  loss: 0.0167
+2024/07/09 16:09:44 - mmengine - INFO - Epoch(train)  [7][150/185]  base_lr: 7.9389e-05 lr: 7.9389e-05  eta: 0:45:12  time: 2.5527  data_time: 0.0022  memory: 32309  loss: 0.0177
+2024/07/09 16:10:48 - mmengine - INFO - Epoch(train)  [7][175/185]  base_lr: 7.9389e-05 lr: 7.9389e-05  eta: 0:43:56  time: 2.5484  data_time: 0.0020  memory: 32309  loss: 0.0131
+2024/07/09 16:11:11 - mmengine - INFO - Exp name: maize_20240709_145027
+2024/07/09 16:11:11 - mmengine - INFO - Saving checkpoint at 7 epochs
+2024/07/09 16:14:24 - mmengine - INFO - Epoch(val) [7][10/10]    accuracy/top1: 98.5714  single-label/precision_classwise: [98.7540512084961, 94.03606414794922]  single-label/recall_classwise: [99.75730895996094, 75.24971771240234]  single-label/f1-score_classwise: [99.2531509399414, 83.60049438476562]  data_time: 1.7339  time: 16.3576
+2024/07/09 16:16:17 - mmengine - INFO - Epoch(train)  [8][ 25/185]  base_lr: 7.2700e-05 lr: 7.2700e-05  eta: 0:42:43  time: 2.5692  data_time: 0.0037  memory: 48749  loss: 0.0175
+2024/07/09 16:17:21 - mmengine - INFO - Epoch(train)  [8][ 50/185]  base_lr: 7.2700e-05 lr: 7.2700e-05  eta: 0:41:27  time: 2.5587  data_time: 0.0024  memory: 32309  loss: 0.0184
+2024/07/09 16:18:25 - mmengine - INFO - Epoch(train)  [8][ 75/185]  base_lr: 7.2700e-05 lr: 7.2700e-05  eta: 0:40:12  time: 2.5867  data_time: 0.0027  memory: 32309  loss: 0.0176
+2024/07/09 16:19:30 - mmengine - INFO - Epoch(train)  [8][100/185]  base_lr: 7.2700e-05 lr: 7.2700e-05  eta: 0:38:58  time: 2.5810  data_time: 0.0045  memory: 32309  loss: 0.0134
+2024/07/09 16:20:34 - mmengine - INFO - Epoch(train)  [8][125/185]  base_lr: 7.2700e-05 lr: 7.2700e-05  eta: 0:37:43  time: 2.5682  data_time: 0.0026  memory: 32309  loss: 0.0141
+2024/07/09 16:21:39 - mmengine - INFO - Epoch(train)  [8][150/185]  base_lr: 7.2700e-05 lr: 7.2700e-05  eta: 0:36:29  time: 2.5665  data_time: 0.0021  memory: 32309  loss: 0.0146
+2024/07/09 16:22:43 - mmengine - INFO - Epoch(train)  [8][175/185]  base_lr: 7.2700e-05 lr: 7.2700e-05  eta: 0:35:15  time: 2.5805  data_time: 0.0020  memory: 32309  loss: 0.0158
+2024/07/09 16:23:07 - mmengine - INFO - Exp name: maize_20240709_145027
+2024/07/09 16:23:07 - mmengine - INFO - Saving checkpoint at 8 epochs
+2024/07/09 16:26:08 - mmengine - INFO - Epoch(val) [8][10/10]    accuracy/top1: 98.6627  single-label/precision_classwise: [98.84247589111328, 94.2934799194336]  single-label/recall_classwise: [99.76295471191406, 77.02552795410156]  single-label/f1-score_classwise: [99.30057525634766, 84.78925323486328]  data_time: 1.0817  time: 15.7494
+2024/07/09 16:28:03 - mmengine - INFO - Epoch(train)  [9][ 25/185]  base_lr: 6.5451e-05 lr: 6.5451e-05  eta: 0:33:55  time: 2.5785  data_time: 0.0033  memory: 48749  loss: 0.0154
+2024/07/09 16:29:08 - mmengine - INFO - Epoch(train)  [9][ 50/185]  base_lr: 6.5451e-05 lr: 6.5451e-05  eta: 0:32:41  time: 2.6075  data_time: 0.0066  memory: 32309  loss: 0.0142
+2024/07/09 16:30:12 - mmengine - INFO - Epoch(train)  [9][ 75/185]  base_lr: 6.5451e-05 lr: 6.5451e-05  eta: 0:31:27  time: 2.5857  data_time: 0.0030  memory: 32309  loss: 0.0146
+2024/07/09 16:31:16 - mmengine - INFO - Epoch(train)  [9][100/185]  base_lr: 6.5451e-05 lr: 6.5451e-05  eta: 0:30:14  time: 2.5988  data_time: 0.0061  memory: 32309  loss: 0.0166
+2024/07/09 16:32:21 - mmengine - INFO - Epoch(train)  [9][125/185]  base_lr: 6.5451e-05 lr: 6.5451e-05  eta: 0:29:01  time: 2.5761  data_time: 0.0030  memory: 32309  loss: 0.0156
+2024/07/09 16:33:26 - mmengine - INFO - Epoch(train)  [9][150/185]  base_lr: 6.5451e-05 lr: 6.5451e-05  eta: 0:27:48  time: 2.5646  data_time: 0.0026  memory: 32309  loss: 0.0138
+2024/07/09 16:34:30 - mmengine - INFO - Epoch(train)  [9][175/185]  base_lr: 6.5451e-05 lr: 6.5451e-05  eta: 0:26:35  time: 2.5623  data_time: 0.0020  memory: 32309  loss: 0.0126
+2024/07/09 16:34:54 - mmengine - INFO - Exp name: maize_20240709_145027
+2024/07/09 16:34:54 - mmengine - INFO - Saving checkpoint at 9 epochs
+2024/07/09 16:38:13 - mmengine - INFO - Epoch(val) [9][10/10]    accuracy/top1: 98.7164  single-label/precision_classwise: [98.89230346679688, 94.48925018310547]  single-label/recall_classwise: [99.76860046386719, 78.0244140625]  single-label/f1-score_classwise: [99.32852172851562, 85.47111511230469]  data_time: 2.7305  time: 17.3525
+2024/07/09 16:39:55 - mmengine - INFO - Epoch(train) [10][ 25/185]  base_lr: 5.7822e-05 lr: 5.7822e-05  eta: 0:25:04  time: 2.5490  data_time: 0.0034  memory: 48749  loss: 0.0144
+2024/07/09 16:41:05 - mmengine - INFO - Epoch(train) [10][ 50/185]  base_lr: 5.7822e-05 lr: 5.7822e-05  eta: 0:23:53  time: 2.5592  data_time: 0.0035  memory: 32309  loss: 0.0137
+2024/07/09 16:42:09 - mmengine - INFO - Epoch(train) [10][ 75/185]  base_lr: 5.7822e-05 lr: 5.7822e-05  eta: 0:22:40  time: 2.5893  data_time: 0.0033  memory: 32309  loss: 0.0155
+2024/07/09 16:43:13 - mmengine - INFO - Epoch(train) [10][100/185]  base_lr: 5.7822e-05 lr: 5.7822e-05  eta: 0:21:28  time: 2.5690  data_time: 0.0034  memory: 32309  loss: 0.0132
+2024/07/09 16:44:17 - mmengine - INFO - Epoch(train) [10][125/185]  base_lr: 5.7822e-05 lr: 5.7822e-05  eta: 0:20:15  time: 2.5904  data_time: 0.0054  memory: 32309  loss: 0.0150
+2024/07/09 16:45:21 - mmengine - INFO - Epoch(train) [10][150/185]  base_lr: 5.7822e-05 lr: 5.7822e-05  eta: 0:19:03  time: 2.5498  data_time: 0.0024  memory: 32309  loss: 0.0129
+2024/07/09 16:46:25 - mmengine - INFO - Epoch(train) [10][175/185]  base_lr: 5.7822e-05 lr: 5.7822e-05  eta: 0:17:51  time: 2.5465  data_time: 0.0021  memory: 32309  loss: 0.0137
+2024/07/09 16:46:49 - mmengine - INFO - Exp name: maize_20240709_145027
+2024/07/09 16:46:49 - mmengine - INFO - Saving checkpoint at 10 epochs
+2024/07/09 16:49:56 - mmengine - INFO - Epoch(val) [10][10/10]    accuracy/top1: 98.7432  single-label/precision_classwise: [98.94188690185547, 94.05548095703125]  single-label/recall_classwise: [99.74601745605469, 79.02330780029297]  single-label/f1-score_classwise: [99.34233093261719, 85.88660430908203]  data_time: 1.6637  time: 16.2875
+2024/07/09 16:51:42 - mmengine - INFO - Epoch(train) [11][ 25/185]  base_lr: 5.0000e-05 lr: 5.0000e-05  eta: 0:16:18  time: 2.5891  data_time: 0.0047  memory: 48749  loss: 0.0134
+2024/07/09 16:52:45 - mmengine - INFO - Epoch(train) [11][ 50/185]  base_lr: 5.0000e-05 lr: 5.0000e-05  eta: 0:15:06  time: 2.5587  data_time: 0.0056  memory: 32309  loss: 0.0133
+2024/07/09 16:53:50 - mmengine - INFO - Epoch(train) [11][ 75/185]  base_lr: 5.0000e-05 lr: 5.0000e-05  eta: 0:13:54  time: 2.5592  data_time: 0.0029  memory: 32309  loss: 0.0135
+2024/07/09 16:54:54 - mmengine - INFO - Epoch(train) [11][100/185]  base_lr: 5.0000e-05 lr: 5.0000e-05  eta: 0:12:42  time: 2.5683  data_time: 0.0028  memory: 32309  loss: 0.0138
+2024/07/09 16:55:58 - mmengine - INFO - Epoch(train) [11][125/185]  base_lr: 5.0000e-05 lr: 5.0000e-05  eta: 0:11:31  time: 2.5919  data_time: 0.0029  memory: 32309  loss: 0.0141
+2024/07/09 16:57:02 - mmengine - INFO - Exp name: maize_20240709_145027
+2024/07/09 16:57:02 - mmengine - INFO - Epoch(train) [11][150/185]  base_lr: 5.0000e-05 lr: 5.0000e-05  eta: 0:10:20  time: 2.5479  data_time: 0.0022  memory: 32309  loss: 0.0148
+2024/07/09 16:58:05 - mmengine - INFO - Epoch(train) [11][175/185]  base_lr: 5.0000e-05 lr: 5.0000e-05  eta: 0:09:09  time: 2.5470  data_time: 0.0018  memory: 32309  loss: 0.0129
+2024/07/09 16:58:29 - mmengine - INFO - Exp name: maize_20240709_145027
+2024/07/09 16:58:29 - mmengine - INFO - Saving checkpoint at 11 epochs
+2024/07/09 17:01:43 - mmengine - INFO - Epoch(val) [11][10/10]    accuracy/top1: 98.7432  single-label/precision_classwise: [98.94737243652344, 93.93939208984375]  single-label/recall_classwise: [99.74037170410156, 79.1343002319336]  single-label/f1-score_classwise: [99.34229278564453, 85.90361022949219]  data_time: 1.7888  time: 16.3877
+2024/07/09 17:03:29 - mmengine - INFO - Epoch(train) [12][ 25/185]  base_lr: 4.2178e-05 lr: 4.2178e-05  eta: 0:07:33  time: 2.5951  data_time: 0.0034  memory: 48749  loss: 0.0131
+2024/07/09 17:04:34 - mmengine - INFO - Epoch(train) [12][ 50/185]  base_lr: 4.2178e-05 lr: 4.2178e-05  eta: 0:06:21  time: 2.5645  data_time: 0.0029  memory: 32309  loss: 0.0136
+2024/07/09 17:05:38 - mmengine - INFO - Epoch(train) [12][ 75/185]  base_lr: 4.2178e-05 lr: 4.2178e-05  eta: 0:05:10  time: 2.5568  data_time: 0.0027  memory: 32309  loss: 0.0122
+2024/07/09 17:06:42 - mmengine - INFO - Epoch(train) [12][100/185]  base_lr: 4.2178e-05 lr: 4.2178e-05  eta: 0:03:59  time: 2.5542  data_time: 0.0026  memory: 32309  loss: 0.0138
+2024/07/09 17:07:46 - mmengine - INFO - Epoch(train) [12][125/185]  base_lr: 4.2178e-05 lr: 4.2178e-05  eta: 0:02:49  time: 2.5651  data_time: 0.0034  memory: 32309  loss: 0.0136
+2024/07/09 17:08:50 - mmengine - INFO - Epoch(train) [12][150/185]  base_lr: 4.2178e-05 lr: 4.2178e-05  eta: 0:01:38  time: 2.5495  data_time: 0.0026  memory: 32309  loss: 0.0166
+2024/07/09 17:09:54 - mmengine - INFO - Epoch(train) [12][175/185]  base_lr: 4.2178e-05 lr: 4.2178e-05  eta: 0:00:28  time: 2.5449  data_time: 0.0022  memory: 32309  loss: 0.0148
+2024/07/09 17:10:18 - mmengine - INFO - Exp name: maize_20240709_145027
+2024/07/09 17:10:18 - mmengine - INFO - Saving checkpoint at 12 epochs
+2024/07/09 17:13:36 - mmengine - INFO - Epoch(val) [12][10/10]    accuracy/top1: 98.7701  single-label/precision_classwise: [98.99154663085938, 93.63636016845703]  single-label/recall_classwise: [99.72344970703125, 80.02220153808594]  single-label/f1-score_classwise: [99.35614776611328, 86.2956314086914]  data_time: 2.6111  time: 17.2279

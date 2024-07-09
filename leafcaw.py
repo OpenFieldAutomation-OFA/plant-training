@@ -12,7 +12,7 @@ val_dataloader = dict(
 )
 test_dataloader = dict(
     dataset=dict(
-        ann_file='annotation/caw_test.txt',
+        ann_file='annotation/test_2.txt',
     ),
 )
 
