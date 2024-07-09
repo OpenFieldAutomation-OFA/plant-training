@@ -39,8 +39,8 @@ caw['class'] = (caw['class'] == class_id).astype(int)
 # shuffle dataframe
 caw = caw.sample(frac=1, random_state=0).reset_index(drop=True)
 
-train_size = int(0.9 * len(caw))
-val_size = int(0.05 * len(caw))
+train_size = int(0.7 * len(caw))
+val_size = int(0.15 * len(caw))
 test_size = len(caw) - train_size - val_size
 
 train_caw = caw[:train_size]
@@ -50,8 +50,8 @@ test_caw = caw[train_size + val_size:]
 #### PlantCLEF ####
 plantclef_dir = args.plantclef_dir
 
-# plantclef_metadata = os.path.join(args.plantclef_dir, 'PlantCLEF2024singleplanttrainingdata.csv')
-plantclef_metadata = 'PlantCLEF2024singleplanttrainingdata.csv'
+plantclef_metadata = os.path.join(args.plantclef_dir, 'PlantCLEF2024singleplanttrainingdata.csv')
+# plantclef_metadata = 'PlantCLEF2024singleplanttrainingdata.csv'
 plantclef = pd.read_csv(plantclef_metadata, delimiter=";",
                         dtype={'partner': 'string'})
 

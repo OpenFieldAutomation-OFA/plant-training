@@ -8,7 +8,7 @@ This script creates the annotation files for MMPretrain.
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--caw_dir',
-                    default="/mnt/c/caw/classification",
+                    default="/mnt/data/caw/classification",
                     help="Directory of CAW classification data.")
 parser.add_argument('--plantclef_dir',
                     default="/mnt/data/plantclef",
@@ -40,8 +40,8 @@ caw['class'] = caw['class'].map(class_mappings)
 # shuffle dataframe
 caw = caw.sample(frac=1, random_state=0).reset_index(drop=True)
 
-train_size = int(0.9 * len(caw))
-val_size = int(0.05 * len(caw))
+train_size = int(0.7 * len(caw))
+val_size = int(0.15 * len(caw))
 test_size = len(caw) - train_size - val_size
 
 train_caw = caw[:train_size]
@@ -52,7 +52,7 @@ test_caw = caw[train_size + val_size:]
 plantclef_dir = args.plantclef_dir
 
 plantclef_metadata = os.path.join(args.plantclef_dir, 'PlantCLEF2024singleplanttrainingdata.csv')
-plantclef_metadata = 'PlantCLEF2024singleplanttrainingdata.csv'
+# plantclef_metadata = 'PlantCLEF2024singleplanttrainingdata.csv'
 plantclef = pd.read_csv(plantclef_metadata, delimiter=";",
                         dtype={'partner': 'string'})
 
