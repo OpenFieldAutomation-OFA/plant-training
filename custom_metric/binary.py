@@ -79,5 +79,8 @@ class BinaryMetric(BaseMetric):
         count_list = list(counter.items())
         sorted_count_list = sorted(count_list, key=lambda x: x[1], reverse=True)
         
-        return {'accuracy': acc, 'precision': prec, 'recall': rec, 'f1': f1,
-                'tp': tp, 'tn': tn, 'fp': fp, 'fn': fn, 'fns': sorted_count_list}
+        return {str(self.class_ids[0]) + '/accuracy': acc, str(self.class_ids[0]) + '/precision': prec,
+            str(self.class_ids[0]) + '/recall': rec, str(self.class_ids[0]) + '/f1': f1,
+            str(self.class_ids[0]) + '/tp': tp, str(self.class_ids[0]) + '/tn': tn, str(self.class_ids[0]) + '/fp': fp, str(self.class_ids[0]) + '/fn': fn,
+            # 'fns': sorted_count_list
+            }

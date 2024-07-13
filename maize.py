@@ -34,4 +34,5 @@ val_evaluator = [
 test_evaluator = [
   dict(type='Accuracy', topk=(1, )),
   dict(type='SingleLabelMetric', average=None),
+  dict(type='BinaryMetric', class_ids=[1], topk=2, thrs=0.1)
 ]
