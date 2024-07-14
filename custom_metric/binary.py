@@ -13,11 +13,12 @@ from mmpretrain.registry import METRICS
 
 @METRICS.register_module()
 class BinaryMetric(BaseMetric):
-    def __init__(self, class_ids: int, thrs: float = 0, topk=1) -> None:
+    def __init__(self, class_ids: int, thrs: float = 0, topk=1, increase_output=None) -> None:
         super().__init__()
         self.class_ids = class_ids
         self.thrs = thrs
         self.topk = topk
+        self.increase_output = increase_output
 
     def process(self, data_batch, data_samples: Sequence[dict]) -> None:
         for data_sample in data_samples:
@@ -40,6 +41,9 @@ class BinaryMetric(BaseMetric):
         fns = []
         for result in results:
             pred_scores = result['pred_score']
+            if self.increase_output is not None:
+                pred_scores[self.class_ids[0]] += self.increase_output
+
             topk_pred_scores, topk_classes = torch.topk(pred_scores, self.topk)
             top_class = torch.topk(pred_scores, 1)[1].item()
             predicted = False
@@ -72,6 +76,7 @@ class BinaryMetric(BaseMetric):
         
         if prec is not None and rec is not None:
             f1 = 2 * prec * rec / (prec + rec)
+            f2 = (1 + 2 ** 2) * prec * rec / (2 ** 2 * prec + rec)
         else:
             f1 = None
         
@@ -80,7 +85,7 @@ class BinaryMetric(BaseMetric):
         sorted_count_list = sorted(count_list, key=lambda x: x[1], reverse=True)
         
         return {str(self.class_ids[0]) + '/accuracy': acc, str(self.class_ids[0]) + '/precision': prec,
-            str(self.class_ids[0]) + '/recall': rec, str(self.class_ids[0]) + '/f1': f1,
+            str(self.class_ids[0]) + '/recall': rec, str(self.class_ids[0]) + '/f1': f1, str(self.class_ids[0]) + '/f2': f2,
             str(self.class_ids[0]) + '/tp': tp, str(self.class_ids[0]) + '/tn': tn, str(self.class_ids[0]) + '/fp': fp, str(self.class_ids[0]) + '/fn': fn,
             # 'fns': sorted_count_list
             }
