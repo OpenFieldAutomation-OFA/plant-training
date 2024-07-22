@@ -12,7 +12,7 @@ with open (caw_test, 'r') as file:
         words = line.strip().split()
         image = Image.open(os.path.join(caw_dir, words[0]))
         width, height = image.size
-        if width * height < 32**2:
+        if width * height < 64**2:
             small_images.append(words)
 
 caw_small = pd.DataFrame(small_images, columns=['filename', 'class'])
