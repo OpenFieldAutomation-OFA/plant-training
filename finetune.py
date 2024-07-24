@@ -17,7 +17,7 @@ model = dict(
 
 # reduce lr
 optim_wrapper = dict(
-    optimizer=dict(lr=1e-6),
+    optimizer=dict(lr=1e-5),
 )
 train_cfg = dict(max_epochs=20)
 

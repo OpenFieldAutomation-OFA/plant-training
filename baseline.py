@@ -92,7 +92,10 @@ test_dataloader = dict(
     persistent_workers=True,
 )
 
-val_evaluator = dict(type='Accuracy', topk=(1, 5))
+val_evaluator = [
+  dict(type='Accuracy', topk=(1, 5)),
+  dict(type='SingleLabelMetric'),
+]
 test_evaluator = [
   dict(type='Accuracy', topk=(1, 5)),
   dict(type='SingleLabelMetric'),
