@@ -81,7 +81,7 @@ val_dataloader = dict(
 )
 test_dataloader = dict(
     batch_size=1024,
-    num_workers=28,
+    num_workers=20,
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,
