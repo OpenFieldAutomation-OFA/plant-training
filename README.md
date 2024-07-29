@@ -34,3 +34,15 @@ Test:
 bash mmpretrain/tools/dist_test.sh dinov2-a100.py work_dirs/dinov2/epoch_1.pth 2
 ```
 
+Convert to ONNX:
+```bash
+python mmdeploy/tools/deploy.py \
+    mmdeploy/configs/mmpretrain/classification_onnxruntime_static.py \
+    finetune.py \
+    /mnt/c/caw/finetuned.pth \
+    /mnt/c/caw/classification/1363199/00dcd0ff0c50e304d43e519f0eafc849.jpg \
+    --work-dir mmdeploy_model \
+    --device cpu \
+    --show \
+    --dump-info
+```

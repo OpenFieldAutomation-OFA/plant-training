@@ -9,4 +9,4 @@ git clone https://github.com/open-mmlab/mmpretrain.git
 cp custom_metric/* mmpretrain/mmpretrain/evaluation/metrics
 cd mmpretrain
 pip install -U openmim && mim install -e .
-# pip install timm pandas pyside6
+pip install mmdeploy mmdeploy-runtime onnxruntime
