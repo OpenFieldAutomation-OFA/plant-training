@@ -10,3 +10,4 @@ cp custom_metric/* mmpretrain/mmpretrain/evaluation/metrics
 cd mmpretrain
 pip install -U openmim && mim install -e .
 pip install mmdeploy mmdeploy-runtime onnxruntime
+git clone https://github.com/open-mmlab/mmdeploy.git
