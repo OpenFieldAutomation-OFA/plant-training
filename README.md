@@ -4,8 +4,7 @@
 You need Python with the following packages installed:
 - [PyTorch](https://pytorch.org/get-started/locally/)
 - [MMPretrain](https://mmpretrain.readthedocs.io/en/latest/get_started.html)
-- [timm](https://timm.fast.ai/)
-- [Pandas](https://pandas.pydata.org/pandas-docs/stable/getting_started/)
+- [MMDeploy](https://mmdeploy.readthedocs.io/en/latest/get_started.html)
 
 On Linux you should be able to set everything up by running `setup.sh`.
 
@@ -31,10 +30,10 @@ bash mmpretrain/tools/dist_test.sh configs/dinov2-a100.py work_dirs/dinov2/epoch
 Convert to ONNX:
 ```bash
 python mmdeploy/tools/deploy.py \
-    configs/onnx.py \
+    mmdeploy/configs/mmpretrain/classification_onnxruntime_dynamic.py \
     configs/finetune.py \
-    /mnt/c/caw/finetuned.pth \
-    /mnt/c/caw/classification/1363199/00dcd0ff0c50e304d43e519f0eafc849.jpg \
+    /mnt/data/saved/20240724_105901_finetune.pth \
+    /mnt/data/caw/classification/1363199/00dcd0ff0c50e304d43e519f0eafc849.jpg \
     --work-dir mmdeploy_model \
     --device cpu \
     --show \
