@@ -30,7 +30,7 @@ bash mmpretrain/tools/dist_test.sh configs/dinov2-a100.py work_dirs/dinov2/epoch
 Convert to ONNX:
 ```bash
 python mmdeploy/tools/deploy.py \
-    mmdeploy/configs/mmpretrain/classification_onnxruntime_dynamic.py \
+    mmdeploy/configs/mmpretrain/classification_onnxruntime_static.py \
     configs/finetune.py \
     /mnt/data/saved/20240724_105901_finetune.pth \
     /mnt/data/caw/classification/1363199/00dcd0ff0c50e304d43e519f0eafc849.jpg \
