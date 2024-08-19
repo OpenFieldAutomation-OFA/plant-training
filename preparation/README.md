@@ -1,5 +1,5 @@
 # Dataset Preparation
-1. Set the `DATA_DIR` environment variable to your desired data folder and `TMP_DIR` to your desired temporary folder (for tar files before extraction).
+1. Set the `DATA_DIR` environment variable to your desired data folder and `TMP_DIR` to your desired temporary folder.
     ```bash
     export DATA_DIR=/your/data
     export TMP_DIR=/tmp
@@ -27,6 +27,6 @@
     ```
 6. Create the MMPretrain annotation files (will be saved in the [annotation folder](../annotation)).
     ```bash
-    python create_ann.py --caw_dir $DATA_DIR/caw/classification --plantclef_dir $DATA_DIR/plantclef --annotation_dir /caw/annotation
+    python create_ann.py --caw_dir $DATA_DIR/caw/classification --plantclef_dir $DATA_DIR/plantclef
     ```
 The last step should not be necessary, as the annotation files are saved on Git already.
