@@ -1,4 +1,5 @@
-_base_ = 'baseline.py'
+# _base_ = 'baseline.py'
+_base_ = 'dinov2_small.py'
 
 train_dataloader = dict(
     dataset=dict(

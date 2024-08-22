@@ -1,4 +1,5 @@
-_base_ = 'baseline.py'
+# _base_ = 'baseline.py'
+_base_ = 'dinov2_small.py'
 
 # don't freeze backbone and load pretrained classification head
 model = dict(
@@ -9,7 +10,7 @@ model = dict(
     head=dict(
         init_cfg=dict(
             type='Pretrained',
-            checkpoint='/mnt/data/saved/20240709_083652_leafcaw_new.pth',
+            checkpoint='/mnt/data/saved/20240822_081104_leafcaw_small.pth',
             prefix='head',
         ),
     ),
@@ -19,7 +20,7 @@ model = dict(
 optim_wrapper = dict(
     optimizer=dict(lr=1e-5),
 )
-train_cfg = dict(max_epochs=20)
+train_cfg = dict(max_epochs=10)
 
 train_dataloader = dict(
     batch_size=128,
