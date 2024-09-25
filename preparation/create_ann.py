@@ -116,6 +116,11 @@ train_leaf['filename'] = 'plantclef' + '/' + 'train' + '/' + train_leaf['filenam
 val_leaf['filename'] = 'plantclef' + '/' + 'val' + '/' + val_leaf['filename']
 test_leaf['filename'] = 'plantclef' + '/' + 'test' + '/' + test_leaf['filename']
 
+train_leaf_maize['filename'] = 'plantclef' + '/' + 'train' + '/' + train_leaf_maize['filename']
+val_leaf_maize['filename'] = 'plantclef' + '/' + 'val' + '/' + val_leaf_maize['filename']
+train_leaf_sugarbeet['filename'] = 'plantclef' + '/' + 'train' + '/' + train_leaf_sugarbeet['filename']
+val_leaf_sugarbeet['filename'] = 'plantclef' + '/' + 'val' + '/' + val_leaf_sugarbeet['filename']
+
 train_plantclefcaw = pd.concat([train_caw, train_plantclef])
 val_plantclefcaw = pd.concat([val_caw, val_plantclef])
 test_plantclefcaw = pd.concat([test_caw, test_plantclef])

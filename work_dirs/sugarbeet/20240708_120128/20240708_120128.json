@@ -1,1 +1,0 @@
-{"accuracy/top1": 98.31595611572266, "single-label/precision_classwise": [98.60667419433594, 94.93243408203125], "single-label/recall_classwise": [99.56037139892578, 85.41033172607422], "single-label/f1-score_classwise": [99.08123016357422, 89.91999053955078], "data_time": 8.512569069862366, "time": 24.246181786060333}

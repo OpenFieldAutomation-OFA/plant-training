@@ -2,11 +2,8 @@
 *.tar
 *.pth
 *.csv
-cropandweed-dataset/
 mmpretrain/
 mmdeploy/
 mmdeploy_model/
-work_dirs/*/*.pth
-work_dirs/*/last_checkpoint
-work_dirs/*/*.py
+work_dirs/
 __pycache__/
