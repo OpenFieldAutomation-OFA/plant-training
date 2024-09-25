@@ -45,16 +45,16 @@ Below is a table describing all config files.
 | [`plantclefleafcaw_maize.py`](configs/plantclefleafcaw_maize.py) | Leaf PLantCLEF & CAW | Binary: corn & weed | - | 84.35 % | - |
 | [`plantclefleafcaw_sugarbeet.py`](configs/plantclefleafcaw_sugarbeet.py) | Leaf PLantCLEF & CAW | Binary: sugar beet & weed | - | - | 69.57 % |
 
-For the ablation the backbone was frozen and only the classification head was trained. The best performing model ([`plantclefleafcaw.py`](configs/plantclefleafcaw.py)) was then finetuned with [`finetune.py`](configs/finetune.py) on both the backbone and head. This process was repeated for the smaller ViT architecture. The resulting models are described in the [models section](#models).
+For the ablation the backbone was frozen and only the classification head was trained. The best performing model [`plantclefleafcaw.py`](configs/plantclefleafcaw.py) was then further finetuned on both the backbone and head with [`finetune.py`](configs/finetune.py). This process was repeated for the smaller ViT architecture. The resulting models are the ones described in the [models section](#models).
 
 
-The training and evaluation of the different config files can be reproduced by using the MMPretrain scripts.
+The training and evaluation of the different config files can be reproduced with the MMPretrain scripts.
 ```bash
-# Training and testing on a single GPU
+# Train and test on a single GPU
 python mmpretrain/tools/train.py configs/plantclefleafcaw.py
 python mmpretrain/tools/test.py configs/plantclefleafcaw.py work_dirs/plantclefleafcaw/epoch_12.pth
 
-# Training and testing on two GPUs
+# Train and test on two GPUs
 bash mmpretrain/tools/dist_train.sh configs/plantclefleafcaw.py 2
 bash mmpretrain/tools/dist_test.sh configs/plantclefleafcaw.py work_dirs/plantclefleafcaw/epoch_12.pth 2
 ```
