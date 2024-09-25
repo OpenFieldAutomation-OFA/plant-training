@@ -1,4 +1,5 @@
 _base_ = '../mmpretrain/configs/_base_/default_runtime.py'
+data_dir = '/mnt/data'
 
 # model settings
 model = dict(
@@ -54,14 +55,12 @@ test_pipeline = [
     dict(type='CenterCrop', crop_size=518),
     dict(type='PackInputs'),
 ]
-data_dir = '/mnt/data'
 train_dataloader = dict(
     batch_size=1024,
-    num_workers=20,
+    num_workers=28,
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,
-        ann_file='annotation/train.txt',
         pipeline=test_pipeline
     ),
     sampler=dict(type='DefaultSampler', shuffle=True),
@@ -69,11 +68,10 @@ train_dataloader = dict(
 )
 val_dataloader = dict(
     batch_size=1024,
-    num_workers=20,
+    num_workers=28,
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,
-        ann_file='annotation/val.txt',
         pipeline=test_pipeline
     ),
     sampler=dict(type='DefaultSampler', shuffle=True),
@@ -85,7 +83,6 @@ test_dataloader = dict(
     dataset=dict(
         type='CustomDataset',
         data_prefix=data_dir,
-        ann_file='annotation/test.txt',
         pipeline=test_pipeline
     ),
     sampler=dict(type='DefaultSampler', shuffle=True),
@@ -93,10 +90,6 @@ test_dataloader = dict(
 )
 
 val_evaluator = [
-  dict(type='Accuracy', topk=(1, 5)),
-  dict(type='SingleLabelMetric'),
-]
-test_evaluator = [
   dict(type='Accuracy', topk=(1, 5)),
   dict(type='SingleLabelMetric'),
 ]

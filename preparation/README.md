@@ -14,7 +14,7 @@
     for f in $TMP_DIR/caw/*.tar; do tar xvf "$f" -C $DATA_DIR/caw/download; done
     rm -r $TMP_DIR/caw
     ```
-4. Convert the CAW dataset to image classification folder.
+4. Convert the CAW dataset to an image classification dataset.
     ```bash
     python caw_to_class.py --bboxes_dir $DATA_DIR/caw/download/bboxes --images_dir $DATA_DIR/caw/download/images --classification_dir $DATA_DIR/caw/classification
     ```
@@ -29,4 +29,4 @@
     ```bash
     python create_ann.py --caw_dir $DATA_DIR/caw/classification --plantclef_dir $DATA_DIR/plantclef
     ```
-The last step should not be necessary, as the annotation files are saved on Git already.
+The last step should not be necessary, as the annotation files are already saved on Git.
