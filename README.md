@@ -10,8 +10,8 @@ We publish two models: a base and a small vision transformer (ViT). Both are tra
 
 | Model | Parameters | Accuracy | Corn F2 | Sugar Beet F2 | Download |
 | --- | --- | --- | --- | --- | --- |
-| ViT-B + head | 92.6 M | 84.61 % | 94.72 % | 91.19 % | [PyTorch](https://github.com/OpenFieldAutomation-OFA/plant-training/releases/download/v0.0.0/finetuned.pth), [ONNX](https://github.com/OpenFieldAutomation-OFA/plant-training/releases/download/v0.0.0/finetuned.onnx) |
-| ViT-S + head | 25.1 M | 82.28 % | 93.75 % | 88.37 % | [PyTorch](https://github.com/OpenFieldAutomation-OFA/plant-training/releases/download/v0.0.0/finetuned_small.pth), [ONNX](https://github.com/OpenFieldAutomation-OFA/plant-training/releases/download/v0.0.0/finetuned_small.onnx) |
+| ViT-B + head | 92.6 M | 84.61&nbsp;% | 94.72&nbsp;% | 91.19&nbsp;% | [PyTorch](https://github.com/OpenFieldAutomation-OFA/plant-training/releases/download/v0.0.0/finetuned.pth), [ONNX](https://github.com/OpenFieldAutomation-OFA/plant-training/releases/download/v0.0.0/finetuned.onnx) |
+| ViT-S + head | 25.1 M | 82.28&nbsp;% | 93.75&nbsp;% | 88.37&nbsp;% | [PyTorch](https://github.com/OpenFieldAutomation-OFA/plant-training/releases/download/v0.0.0/finetuned_small.pth), [ONNX](https://github.com/OpenFieldAutomation-OFA/plant-training/releases/download/v0.0.0/finetuned_small.onnx) |
 
 ### Usage
 To load the PyTorch checkpoint, you must have [PyTorch](https://pytorch.org/get-started/locally/) and [MMPretrain](https://mmpretrain.readthedocs.io/en/latest/get_started.html) installed. An example of loading the model and inferencing an image is shown in [`pytorch_ex.py`](sample_usage/pytorch_ex.py).
@@ -38,12 +38,12 @@ Below is a table describing all config files.
 
 | Config File | Dataset | Classes | Accuracy | Corn F2 | Sugar Beet F2 |
 | --- | --- | --- | --- | --- | --- |
-| [`plantclef.py`](configs/caw_plantclef.py) | Entire PLantCLEF | All | 9.94 % | - | - |
-| [`caw.py`](configs/caw.py) | CAW | All | 72.47 % | - | - |
-| [`plantclefcaw.py`](configs/plantclefcaw.py) | Entire PLantCLEF & CAW | All | 74.69 % | - | - |
-| [`plantclefleafcaw.py`](configs/plantclefleafcaw.py) | Leaf PLantCLEF & CAW | All | **75.41 %** | **92.24 %** | **82.69 %** |
-| [`plantclefleafcaw_maize.py`](configs/plantclefleafcaw_maize.py) | Leaf PLantCLEF & CAW | Binary: corn & weed | - | 84.35 % | - |
-| [`plantclefleafcaw_sugarbeet.py`](configs/plantclefleafcaw_sugarbeet.py) | Leaf PLantCLEF & CAW | Binary: sugar beet & weed | - | - | 69.57 % |
+| [`plantclef.py`](configs/plantclef.py) | Entire PLantCLEF | All | 9.94&nbsp;% | - | - |
+| [`caw.py`](configs/caw.py) | CAW | All | 72.47&nbsp;% | - | - |
+| [`plantclefcaw.py`](configs/plantclefcaw.py) | Entire PLantCLEF & CAW | All | 74.69&nbsp;% | - | - |
+| [`plantclefleafcaw.py`](configs/plantclefleafcaw.py) | Leaf PLantCLEF & CAW | All | **75.41&nbsp;%** | **92.24&nbsp;%** | **82.69&nbsp;%** |
+| [`plantclefleafcaw_maize.py`](configs/plantclefleafcaw_maize.py) | Leaf PLantCLEF & CAW | Binary: corn & weed | - | 84.35&nbsp;% | - |
+| [`plantclefleafcaw_sugarbeet.py`](configs/plantclefleafcaw_sugarbeet.py) | Leaf PLantCLEF & CAW | Binary: sugar beet & weed | - | - | 69.57&nbsp;% |
 
 For the ablation the backbone was frozen and only the classification head was trained. The best performing model [`plantclefleafcaw.py`](configs/plantclefleafcaw.py) was then further finetuned on both the backbone and head with [`finetune.py`](configs/finetune.py). This process was repeated for the smaller ViT architecture. The resulting models are the ones described in the [models section](#models).
 
