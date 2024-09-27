@@ -59,7 +59,7 @@ bash mmpretrain/tools/dist_train.sh configs/plantclefleafcaw.py 2
 bash mmpretrain/tools/dist_test.sh configs/plantclefleafcaw.py work_dirs/plantclefleafcaw/epoch_12.pth 2
 ```
 
-### Convert Trained Model to ONNX
+## Convert Trained Model to ONNX
 To export our models to ONNX we use [MMDeploy](https://mmdeploy.readthedocs.io/en/latest/get_started.html).
 
 ```bash
